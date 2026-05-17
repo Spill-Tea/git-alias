@@ -45,13 +45,12 @@
 # ```
 #
 
-BRANCH=$1
+set -e
+
+BRANCH=${1:-$GIT_FLOW_BRANCH}
 
 if [[ -z $BRANCH ]]; then
-    BRANCH="${GIT_FLOW_BRANCH}"
-    if [[ -z $BRANCH ]]; then
-        BRANCH=$(git default)
-    fi
+    BRANCH=$(git default)
 fi
 
 # Sanity check

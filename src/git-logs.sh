@@ -42,9 +42,9 @@
 # ```
 #
 
-a="%C(#99a77e)%h"             # short git commit hash (light green)
+a="%C(#99A77E)%h"             # short git commit hash (light green)
 b="%C(#7E99A7) %as"           # Date string (light blue)
 c="%C(#A77E84) %s %Creset"    # Commit message (light red)
 d="(%C(#8C7EA7)@%an%Creset)"  # @ Author name (light purple)
 
-git log --color=always --pretty=format:"$a$b$c$d"
+git log --color=always --pretty=format:"$a$b$c$d" $@

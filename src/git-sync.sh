@@ -34,7 +34,10 @@
 #
 # Sync the current working branch with the primary default branch.
 # If no arguments are provided, these default to the current branch you are actively in
-# and the default branch of the repository.
+# and the default branch of the repository. The first argument can also be triggered
+# by the environment variable `GIT_FLOW_BRANCH`, where retrieving a development branch
+# may make more sense by default. Otherwise, it is on the user to manually specify the
+# desired branch to sync with.
 #
 # Example:
 #
@@ -47,15 +50,20 @@
 set -e
 
 # Arguments, with defaults
-DEFAULT_BRANCH=${1:-$(git default)}
+DEFAULT_BRANCH=${1:-$GIT_FLOW_BRANCH}
 CURRENT_BRANCH=${2:-$(git current)}
 
-# Sanity checks - confirm both branches exist before proceeding.
+if [[ -z $DEFAULT_BRANCH ]]; then
+    DEFAULT_BRANCH=$(git default)
+fi
+
+# Sanity check I - confirm branches differ.
 if [ $DEFAULT_BRANCH = $CURRENT_BRANCH ]; then
     printf "Aborting. Both branches specified are identical.\n"
     exit 1
 fi
 
+# Sanity check II - confirm both branches exist.
 for branch in $DEFAULT_BRANCH $CURRENT_BRANCH
 do
     if [[ -z `git verify $branch` ]]; then

@@ -36,7 +36,8 @@
 # modified using the `GIT_FLOW_BRANCH` environment variable, which is helpful when
 # using a git flow model, where the primary development branch is not the default
 # branch.
-#
+
+
 # Example:
 #
 # ```sh

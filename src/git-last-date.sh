@@ -42,5 +42,4 @@
 # ```
 #
 
-# git log -1 --date=format:"%a %d %b %Y @ %T" --format="%ad"
 git log -1 --format="%cI"

@@ -29,156 +29,143 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # Capture repository default branch name
 get_default_branch() {
-    git symbolic-ref refs/remotes/origin/HEAD \
-    | sed 's@^refs/remotes/origin/@@'
+	git symbolic-ref refs/remotes/origin/HEAD |
+		sed 's@^refs/remotes/origin/@@'
 }
-
 
 # Get name of current working branch
 get_current_branch() {
-    git rev-parse --abbrev-ref HEAD
+	git rev-parse --abbrev-ref HEAD
 }
-
 
 # Get latest sha hash tag
 get_current_sha() {
-    git rev-parse --short HEAD
+	git rev-parse --short HEAD
 }
 
 # list currently staged file names
 get_staged_files() {
-    git diff --cached --name-only
+	git diff --cached --name-only
 }
-
 
 # Compute distance between two branches.
 calculate_distance() {
-    local branch=$1
-    local ancestor=$2
+	local branch=$1
+	local ancestor=$2
 
-    echo $(git rev-list --count "$branch..$ancestor")
+	echo $(git rev-list --count "$branch..$ancestor")
 }
-
 
 # Identify if two branches are ancestrally linked.
 is_ancestor() {
-    git merge-base --is-ancestor $1 $2
+	git merge-base --is-ancestor $1 $2
 }
-
 
 # Confirm a branch name exists
 verify() {
-    git rev-parse --quiet --verify $1
+	git rev-parse --quiet --verify $1
 }
-
 
 # Confirm a branch exists within a repository
 validate() {
-    local branch=$1
+	local branch=$1
 
-    if [[ -z `verify $branch` ]]; then
-        printf "Aborting. Branch does not exist locally in repo: $branch\n"
-        exit 1
-    fi
+	if [[ -z $(verify $branch) ]]; then
+		printf "Aborting. Branch does not exist locally in repo: $branch\n"
+		exit 1
+	fi
 }
-
 
 # Capture names of every branch merged to another (or default) branch
 list_merged_branches() {
-    branch=${1:-$(get_default_branch)}
+	branch=${1:-$(get_default_branch)}
 
-    if ! validate $branch; then
-        exit 1
-    fi
+	if ! validate $branch; then
+		exit 1
+	fi
 
-    git branch --merged $branch --no-color | awk '{$1=$1};1' | grep -v $branch
+	git branch --merged $branch --no-color | awk '{$1=$1};1' | grep -v $branch
 }
-
 
 # Capture parent branch of current branch
 git_parent_branch() {
-    local current=${1:-$(get_current_branch)}
-    local branches=${2:-$(git for-each-ref --format='%(refname:short)' refs/heads/)}
+	local current=${1:-$(get_current_branch)}
+	local branches=${2:-$(git for-each-ref --format='%(refname:short)' refs/heads/)}
 
-    local best_branch=$(get_default_branch)
-    local best_distance=$(calculate_distance $best_branch $current)
+	local best_branch=$(get_default_branch)
+	local best_distance=$(calculate_distance $best_branch $current)
 
-    for branch in $branches; do
-        [[ "$branch" == "$current" ]] && continue
+	for branch in $branches; do
+		[[ "$branch" == "$current" ]] && continue
 
-        if is_ancestor "$branch" "$current"; then
-            distance=$(calculate_distance $branch $current)
-            if (( distance < best_distance )); then
-                best_distance=$distance
-                best_branch=$branch
-            fi
-        fi
-    done
+		if is_ancestor "$branch" "$current"; then
+			distance=$(calculate_distance $branch $current)
+			if ( (distance <best_distance)); then
+				best_distance=$distance
+				best_branch=$branch
+			fi
+		fi
+	done
 
-    echo "$best_branch"
+	echo "$best_branch"
 }
-
 
 # Prune branches that have been merged to (default) branch
 prune_branches() {
-    branch=${1:-$(get_default_branch)}
+	branch=${1:-$(get_default_branch)}
 
-    if ! validate $branch; then
-        exit 1
-    fi
+	if ! validate $branch; then
+		exit 1
+	fi
 
-    list_merged_branches $branch | xargs -n 1 git branch -d
+	list_merged_branches $branch | xargs -n 1 git branch -d
 }
-
 
 # sync a current branch with its parent (default) branch
 sync() {
-    default=${1:-$get_default_branch}
-    current=${2:-$(get_current_branch)}
+	default=${1:-$get_default_branch}
+	current=${2:-$(get_current_branch)}
 
-    # Sanity check I - confirm branches differ.
-    if [ $default = $current ]; then
-        printf "Aborting. Both branches specified are identical.\n"
-        exit 1
-    fi
+	# Sanity check I - confirm branches differ.
+	if [ $default = $current ]; then
+		printf "Aborting. Both branches specified are identical.\n"
+		exit 1
+	fi
 
-    # Sanity check II - confirm both branches exist.
-    for branch in $default $current
-    do
-        if ! validate $branch; then
-            exit 1
-        fi
-    done
+	# Sanity check II - confirm both branches exist.
+	for branch in $default $current; do
+		if ! validate $branch; then
+			exit 1
+		fi
+	done
 
-    # Pull latest
-    git checkout $default
-    git pull
+	# Pull latest
+	git checkout $default
+	git pull
 
-    # sync rebase with current working branch to maintain linear commit history.
-    git checkout $current
-    git rebase $default
+	# sync rebase with current working branch to maintain linear commit history.
+	git checkout $current
+	git rebase $default
 }
-
 
 # list branches with a stacked PR
 get_stacked_branches() {
-    local base_branch="$1"
-    if ! validate $base_branch; then
-        exit 1
-    fi
+	local base_branch="$1"
+	if ! validate $base_branch; then
+		exit 1
+	fi
 
-    git for-each-ref \
-        --format='%(refname:short)' \
-        --merged HEAD \
-        refs/heads/ |
-    while read -r branch; do
-        [ "$branch" = "$base_branch" ] && continue
+	git for-each-ref \
+		--format='%(refname:short)' \
+		--merged HEAD \
+		refs/heads/ |
+		while read -r branch; do
+			[ "$branch" = "$base_branch" ] && continue
 
-        is_ancestor "$base_branch" "$branch" &&
-        is_ancestor "$branch" HEAD &&
-        echo "$branch"
-    done
+			is_ancestor "$base_branch" "$branch" &&
+				is_ancestor "$branch" HEAD &&
+				echo "$branch"
+		done
 }

@@ -43,6 +43,11 @@ get_current_branch() {
 }
 
 
+# Get latest sha hash tag
+get_current_sha() {
+    git rev-parse --short HEAD
+}
+
 # list currently staged file names
 get_staged_files() {
     git diff --cached --name-only

@@ -30,14 +30,14 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-# git-current.sh
+# git-stack.sh
 #
-# Get the name of the currently active branch.
+# List the names of every branch that has been merged to default branch (on remote).
 #
 # Example:
 #
 # ```sh
-# sh git-current.sh
+# sh git-stack.sh {default_branch}
 #
 # ```
 #
@@ -47,5 +47,6 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
     source "$Directory/lib.sh"
 
-    get_current_branch
+    branch=${1:-$(get_default_branch)}
+    get_stacked_branches $branch
 fi

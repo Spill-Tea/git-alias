@@ -42,12 +42,19 @@
 # ```
 #
 
-file_name=$1
+unstage_file() {
+    file_name=$1
 
-# Abort if file does not exist.
-if ! [[ -f "$file_name" ]]; then
-    printf "Aborting. File does not exist: $file_name\n"
-    exit 1
+    # Abort if file does not exist.
+    if ! [[ -f "$file_name" ]]; then
+        printf "Aborting. File does not exist: $file_name\n"
+        exit 1
+    fi
+
+    git restore --staged $file_name
+}
+
+
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    unstage_file $1
 fi
-
-git restore --staged $file_name

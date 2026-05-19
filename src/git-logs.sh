@@ -48,4 +48,12 @@ b="%C(#7E99A7) %as"           # Date string (light blue)
 c="%C(#A77E84) %s %Creset"    # Commit message (light red)
 d="(%C(#8C7EA7)@%an%Creset)"  # @ Author name (light purple)
 
-git log --color=always --pretty=format:"$a$b$c$d" $@
+
+pretty_log() {
+    git log --color=always --pretty=format:"$a$b$c$d" $@
+}
+
+
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    pretty_log $@
+fi

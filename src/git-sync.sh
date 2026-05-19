@@ -47,35 +47,12 @@
 # ```
 #
 
-set -e
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+    source "$Directory/lib.sh"
 
-# Arguments, with defaults
-DEFAULT_BRANCH=${1:-$GIT_FLOW_BRANCH}
-CURRENT_BRANCH=${2:-$(git current)}
-
-if [[ -z $DEFAULT_BRANCH ]]; then
-    DEFAULT_BRANCH=$(git default)
+    parent=${1:-$GIT_FLOW_BRANCH}
+    current=${2:-${get_current_branch}}
+    sync $parent $current
 fi
-
-# Sanity check I - confirm branches differ.
-if [ $DEFAULT_BRANCH = $CURRENT_BRANCH ]; then
-    printf "Aborting. Both branches specified are identical.\n"
-    exit 1
-fi
-
-# Sanity check II - confirm both branches exist.
-for branch in $DEFAULT_BRANCH $CURRENT_BRANCH
-do
-    if [[ -z `git verify $branch` ]]; then
-        printf "Aborting. Branch does not exist locally in repo: $branch\n"
-        exit 1
-    fi
-done
-
-# Pull latest
-git checkout $DEFAULT_BRANCH
-git pull
-
-# sync rebase with current working branch to maintain linear commit history.
-git checkout $CURRENT_BRANCH
-git rebase $DEFAULT_BRANCH

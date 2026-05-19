@@ -42,12 +42,12 @@
 # ```
 #
 
-BRANCH=${1:-$(git default)}
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+    source "$Directory/lib.sh"
 
-# Sanity check
-if [[ -z `git verify $BRANCH` ]]; then
-    printf "Aborting. Branch does not exist locally in repo: $BRANCH\n"
-    exit 1
+    # if no user argument provided, assumes default branch
+    branch=${1:-$(get_default_branch)}
+    list_merged_branches $branch
 fi
-
-git branch --merged $BRANCH --no-color | awk '{$1=$1};1' | grep -v $BRANCH

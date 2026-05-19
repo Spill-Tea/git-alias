@@ -45,4 +45,10 @@
 # ```
 #
 
-git rev-parse --quiet --verify $1
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+    source "$Directory/lib.sh"
+
+    verify $1
+fi

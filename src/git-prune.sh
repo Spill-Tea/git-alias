@@ -46,18 +46,11 @@
 # ```
 #
 
-set -e
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+    source "$Directory/lib.sh"
 
-BRANCH=${1:-$GIT_FLOW_BRANCH}
-
-if [[ -z $BRANCH ]]; then
-    BRANCH=$(git default)
+    branch=${1:-$GIT_FLOW_BRANCH}
+    prune_branches $branch
 fi
-
-# Sanity check
-if [[ -z `git verify $BRANCH` ]]; then
-    printf "Aborting. Branch does not exist locally in repo: $BRANCH\n"
-    exit 1
-fi
-
-git list-merged $BRANCH | xargs -n 1 git branch -d

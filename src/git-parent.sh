@@ -30,14 +30,14 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-# git-current.sh
+# git-parent.sh
 #
-# Get the name of the currently active branch.
+# Retrieve the closest parent branch from current active working branch.
 #
 # Example:
 #
 # ```sh
-# sh git-current.sh
+# sh git-parent.sh
 #
 # ```
 #
@@ -47,5 +47,7 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
     source "$Directory/lib.sh"
 
-    get_current_branch
+    # default to current branch if no user arg is provided.
+    current_branch=${1:-$(get_current_branch)}
+    git_parent_branch $current_branch
 fi

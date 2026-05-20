@@ -1,0 +1,37 @@
+ci:
+  autoupdate_schedule: quarterly
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^tests/(integration|unit)/data/
+      - id: end-of-file-fixer
+        exclude: ^(tests/(integration|unit)/data/|LICENSE)
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: [ --maxkb=1024 ]
+      - id: requirements-txt-fixer
+
+  - repo: https://github.com/google/addlicense
+    rev: v1.2.0
+    hooks:
+      - id: addlicense
+        language: golang
+        args: [
+          -f, LICENSE,
+          ]
+        types_or: [ shell ]
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.13.1-1
+    hooks:
+      - id: shfmt-src
+        args: [
+          "--language-dialect", "bash",
+          "--simplify",
+          "--write",
+          "--indent", "4"
+        ]

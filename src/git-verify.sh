@@ -44,6 +44,25 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-verify.sh {branch name}
+
+Description:
+    Confirm that a branch name exists locally. If the branch exists, the long sha tag
+    is returned. Otherwise, when a branch does not exist, nothing is returned.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-verify.sh main
+    sh git-verify.sh --help
+
+EOF
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
     Directory="$(
@@ -51,6 +70,16 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         pwd -P
     )"
     source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
+
+    if [[ -z $1 ]]; then
+        printf "Aborting. No argument provided."
+        exit 1
+    fi
 
     verify $1
 fi

@@ -41,6 +41,24 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-sha.sh
+
+Description:
+    Get the sha tag from the most current commit.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-sha.sh
+    sh git-sha.sh --help
+
+EOF
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
     Directory="$(
@@ -48,6 +66,11 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         pwd -P
     )"
     source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
 
     get_current_sha
 fi

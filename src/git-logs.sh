@@ -42,15 +42,46 @@
 # ```
 #
 
-a="%C(#99A77E)%h"            # short git commit hash (light green)
-b="%C(#7E99A7) %as"          # Date string (light blue)
-c="%C(#A77E84) %s %Creset"   # Commit message (light red)
-d="(%C(#8C7EA7)@%an%Creset)" # @ Author name (light purple)
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-logs.sh [options]
+
+Description:
+    Pretty print commit logs. Use identically to git log command.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-logs.sh
+    sh git-logs.sh -n 1
+    sh git-logs.sh --help
+
+EOF
+}
 
 pretty_log() {
+    a="%C(#99A77E)%h"            # short git commit hash (light green)
+    b="%C(#7E99A7) %as"          # Date string (light blue)
+    c="%C(#A77E84) %s %Creset"   # Commit message (light red)
+    d="(%C(#8C7EA7)@%an%Creset)" # @ Author name (light purple)
+
     git log --color=always --pretty=format:"$a$b$c$d" $@
 }
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
+
     pretty_log $@
 fi

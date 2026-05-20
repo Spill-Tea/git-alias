@@ -41,6 +41,24 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-unstage.sh {file name}
+
+Description:
+    Unstage a specific file for commit (i.e. undo git add command).
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-unstage.sh test.txt
+    sh git-unstage.sh --help
+
+EOF
+}
+
 unstage_file() {
     file_name=$1
 
@@ -54,5 +72,17 @@ unstage_file() {
 }
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
+
     unstage_file $1
 fi

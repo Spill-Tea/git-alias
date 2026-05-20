@@ -41,6 +41,26 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-list-merged.sh {branch name}
+
+Description:
+    List the names of every branch that has been merged to the user defined branch.
+    If no argument is provided, the default repository branch is used.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-list-merged.sh
+    sh git-list-merged.sh main
+    sh git-list-merged.sh --help
+
+EOF
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
     Directory="$(
@@ -48,6 +68,11 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         pwd -P
     )"
     source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
 
     # if no user argument provided, assumes default branch
     branch=${1:-$(get_default_branch)}

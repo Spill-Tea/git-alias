@@ -42,13 +42,13 @@
 #
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-	# import common lib
-	Directory="$(
-		cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
-		pwd -P
-	)"
-	source "$Directory/lib.sh"
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
 
-	branch=${1:-$(get_default_branch)}
-	get_stacked_branches $branch
+    branch=${1:-$(get_default_branch)}
+    get_stacked_branches $branch
 fi

@@ -47,14 +47,14 @@
 #
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-	# import common lib
-	Directory="$(
-		cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
-		pwd -P
-	)"
-	source "$Directory/lib.sh"
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
 
-	parent=${1:-$GIT_FLOW_BRANCH}
-	current=${2:-${get_current_branch}}
-	sync $parent $current
+    parent=${1:-$GIT_FLOW_BRANCH}
+    current=${2:-${get_current_branch}}
+    sync $parent $current
 fi

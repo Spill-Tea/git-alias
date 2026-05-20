@@ -42,14 +42,14 @@
 #
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-	# import common lib
-	Directory="$(
-		cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
-		pwd -P
-	)"
-	source "$Directory/lib.sh"
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
 
-	# if no user argument provided, assumes default branch
-	branch=${1:-$(get_default_branch)}
-	list_merged_branches $branch
+    # if no user argument provided, assumes default branch
+    branch=${1:-$(get_default_branch)}
+    list_merged_branches $branch
 fi

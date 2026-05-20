@@ -42,9 +42,9 @@
 #
 
 get_last_date() {
-	git log -1 --format="%cI"
+    git log -1 --format="%cI"
 }
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-	get_last_date
+    get_last_date
 fi

@@ -42,14 +42,14 @@
 #
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-	# import common lib
-	Directory="$(
-		cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
-		pwd -P
-	)"
-	source "$Directory/lib.sh"
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
 
-	# default to current branch if no user arg is provided.
-	current_branch=${1:-$(get_current_branch)}
-	git_parent_branch $current_branch
+    # default to current branch if no user arg is provided.
+    current_branch=${1:-$(get_current_branch)}
+    git_parent_branch $current_branch
 fi

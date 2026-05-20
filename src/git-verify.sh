@@ -47,7 +47,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-verify.sh {branch name}
+    sh git-verify.sh [options] <branch_name>
 
 Description:
     Confirm that a branch name exists locally. If the branch exists, the long sha tag

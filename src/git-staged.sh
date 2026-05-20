@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-staged.sh
+    sh git-staged.sh [options]
 
 Description:
     Retrieve the names of every file staged (i.e. git add / rm / mv) for commit.

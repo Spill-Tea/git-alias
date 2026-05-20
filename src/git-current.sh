@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-current.sh
+    sh git-current.sh [options]
 
 Description:
     Retrieve the branch name of the currently active working branch.

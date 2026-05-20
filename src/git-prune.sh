@@ -48,14 +48,14 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-prune.sh {branch name}
+    sh git-prune.sh [options] [branch_name]
 
 Description:
     Prunes stale local branches that have been merged upstream to a defined branch. If
-    no branch is specified, the default repository branch is used. This behavior can be
-    modified using the environment variable 'GIT_FLOW_BRANCH'. This can be helpful when
-    using a git flow model of development, where the primary development branch differs
-    from the repository default branch.
+    no positional branch_name argument is specified, the default repository branch is
+    used. This behavior can be modified using the environment variable
+    \`GIT_FLOW_BRANCH\`. This can be helpful when using a git flow model of development,
+    where the primary development branch differs from the repository default branch.
 
 Options:
     -h, --help      Show this help message and exit

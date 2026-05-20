@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-last-date.sh
+    sh git-last-date.sh [options]
 
 Description:
     Retrieve the date of the most current commit in ISO8601 format.

@@ -44,11 +44,12 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-stack.sh {default branch}
+    sh git-stack.sh [options] [default_branch]
 
 Description:
     List the names of every branch that has been merged to the specified branch on
-    remote. If no branch argument is provided, the default repository branch is used.
+    remote. If no positional default_branch argument has been provided, the repository
+    default branch is used.
 
 Options:
     -h, --help      Show this help message and exit

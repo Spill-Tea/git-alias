@@ -48,7 +48,8 @@ Usage:
     sh git-logs.sh [options]
 
 Description:
-    Pretty print commit logs. Use identically to git log command.
+    Pretty print commit logs. Use identically to git log command. For more details
+    on available options, see \`man git-log\`.
 
 Options:
     -h, --help      Show this help message and exit

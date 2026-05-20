@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-default.sh
+    sh git-default.sh [options]
 
 Description:
     Retrieve the name of the default branch of a repository.

@@ -44,11 +44,11 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-parent.sh {branch name}
+    sh git-parent.sh  [options] [branch_name]
 
 Description:
-    Retrieve the name of the closest parent branch ancestor. If no branch name is
-    provided, it defaults to use the currently active working branch.
+    Retrieve the name of the closest parent branch ancestor. If no positional argument
+    (branch_name) is provided, it defaults to use the currently active working branch.
 
 Options:
     -h, --help      Show this help message and exit

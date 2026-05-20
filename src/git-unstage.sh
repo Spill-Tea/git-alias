@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-unstage.sh {file name}
+    sh git-unstage.sh [options] [file_name]
 
 Description:
     Unstage a specific file for commit (i.e. undo git add command).
@@ -53,7 +53,7 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-unstage.sh test.txt
+    sh git-unstage.sh example.txt
     sh git-unstage.sh --help
 
 EOF

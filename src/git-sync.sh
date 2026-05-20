@@ -49,13 +49,13 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-sync.sh {default branch} {current branch}
+    sh git-sync.sh [options] [default_branch] [current_branch]
 
 Description:
     Sync a branch to an upstream ancestor branch, maintaining linear commit history. If
     no arguments are provided, these default to the repository default branch, and the
-    currently active working branch. The behavior of the first argument (default branch)
-    can be modified using the environment variable 'GIT_FLOW_BRANCH'.
+    currently active working branch. The behavior of the first positional argument
+    (default_branch) can be modified using the environment variable \`GIT_FLOW_BRANCH\`.
 
 Options:
     -h, --help      Show this help message and exit

@@ -44,11 +44,11 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-list-merged.sh {branch name}
+    sh git-list-merged.sh [options] [branch_name]
 
 Description:
     List the names of every branch that has been merged to the user defined branch.
-    If no argument is provided, the default repository branch is used.
+    If no positional argument is provided, the default repository branch is used.
 
 Options:
     -h, --help      Show this help message and exit

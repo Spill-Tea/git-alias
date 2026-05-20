@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-sha.sh
+    sh git-sha.sh [options]
 
 Description:
     Get the sha tag from the most current commit.

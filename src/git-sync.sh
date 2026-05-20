@@ -46,6 +46,30 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-sync.sh [options] [default_branch] [current_branch]
+
+Description:
+    Sync a branch to an upstream ancestor branch, maintaining linear commit history. If
+    no arguments are provided, these default to the repository default branch, and the
+    currently active working branch. The behavior of the first positional argument
+    (default_branch) can be modified using the environment variable \`GIT_FLOW_BRANCH\`.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-synch.sh
+    sh git-sync.sh dev
+    sh git-sync.sh dev feat-1
+    GIT_FLOW_BRANCH=dev sh git-sync.sh
+    sh git-sync.sh --help
+
+EOF
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
     Directory="$(
@@ -53,6 +77,11 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         pwd -P
     )"
     source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
 
     parent=${1:-$GIT_FLOW_BRANCH}
     current=${2:-${get_current_branch}}

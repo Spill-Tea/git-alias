@@ -41,10 +41,40 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-last-date.sh [options]
+
+Description:
+    Retrieve the date of the most current commit in ISO8601 format.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-last-date.sh
+    sh git-last-date.sh --help
+
+EOF
+}
+
 get_last_date() {
     git log -1 --format="%cI"
 }
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    # import common lib
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
+    source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
+
     get_last_date
 fi

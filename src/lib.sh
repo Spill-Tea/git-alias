@@ -169,3 +169,15 @@ get_stacked_branches() {
                 echo "$branch"
         done
 }
+
+# Determine if script arguments contain "-h" or "--help" cli flags
+get_help() {
+    for arg in "$@"; do
+        case "$arg" in
+        -h | --help)
+            return 0
+            ;;
+        esac
+    done
+    return 1
+}

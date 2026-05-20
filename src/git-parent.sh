@@ -41,6 +41,26 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-parent.sh  [options] [branch_name]
+
+Description:
+    Retrieve the name of the closest parent branch ancestor. If no positional argument
+    (branch_name) is provided, it defaults to use the currently active working branch.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-parent.sh
+    sh git-parent.sh feat-branch-1
+    sh git-parent.sh --help
+
+EOF
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
     Directory="$(
@@ -48,6 +68,11 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         pwd -P
     )"
     source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
 
     # default to current branch if no user arg is provided.
     current_branch=${1:-$(get_current_branch)}

@@ -41,6 +41,27 @@
 # ```
 #
 
+show_help_menu() {
+    cat <<EOF
+Usage:
+    sh git-stack.sh [options] [default_branch]
+
+Description:
+    List the names of every branch that has been merged to the specified branch on
+    remote. If no positional default_branch argument has been provided, the repository
+    default branch is used.
+
+Options:
+    -h, --help      Show this help message and exit
+
+Examples:
+    sh git-stack.sh
+    sh git-stack.sh dev
+    sh git-stack.sh --help
+
+EOF
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
     Directory="$(
@@ -48,6 +69,11 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         pwd -P
     )"
     source "$Directory/lib.sh"
+
+    if get_help "$@"; then
+        show_help_menu
+        exit 0
+    fi
 
     branch=${1:-$(get_default_branch)}
     get_stacked_branches $branch

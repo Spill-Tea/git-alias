@@ -29,7 +29,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # git-list-merged.sh
 #
 # List the names of every branch that has been merged to default branch (on remote).
@@ -44,7 +43,10 @@
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
-    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
     source "$Directory/lib.sh"
 
     # if no user argument provided, assumes default branch

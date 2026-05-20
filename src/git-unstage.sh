@@ -29,7 +29,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # git-unstage.sh
 #
 # Unstage a file for commit.
@@ -46,14 +45,13 @@ unstage_file() {
     file_name=$1
 
     # Abort if file does not exist.
-    if ! [[ -f "$file_name" ]]; then
+    if ! [[ -f $file_name ]]; then
         printf "Aborting. File does not exist: $file_name\n"
         exit 1
     fi
 
     git restore --staged $file_name
 }
-
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     unstage_file $1

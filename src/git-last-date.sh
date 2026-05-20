@@ -29,7 +29,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # git-last-date.sh
 #
 # Retrieve the date of the latest commit in ISO8601 format.
@@ -45,7 +44,6 @@
 get_last_date() {
     git log -1 --format="%cI"
 }
-
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     get_last_date

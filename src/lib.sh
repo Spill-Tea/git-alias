@@ -29,25 +29,26 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # Capture repository default branch name
 get_default_branch() {
-    git symbolic-ref refs/remotes/origin/HEAD \
-    | sed 's@^refs/remotes/origin/@@'
+    git symbolic-ref refs/remotes/origin/HEAD |
+        sed 's@^refs/remotes/origin/@@'
 }
-
 
 # Get name of current working branch
 get_current_branch() {
     git rev-parse --abbrev-ref HEAD
 }
 
+# Get latest sha hash tag
+get_current_sha() {
+    git rev-parse --short HEAD
+}
 
 # list currently staged file names
 get_staged_files() {
     git diff --cached --name-only
 }
-
 
 # Compute distance between two branches.
 calculate_distance() {
@@ -57,29 +58,25 @@ calculate_distance() {
     echo $(git rev-list --count "$branch..$ancestor")
 }
 
-
 # Identify if two branches are ancestrally linked.
 is_ancestor() {
     git merge-base --is-ancestor $1 $2
 }
-
 
 # Confirm a branch name exists
 verify() {
     git rev-parse --quiet --verify $1
 }
 
-
 # Confirm a branch exists within a repository
 validate() {
     local branch=$1
 
-    if [[ -z `verify $branch` ]]; then
+    if [[ -z $(verify $branch) ]]; then
         printf "Aborting. Branch does not exist locally in repo: $branch\n"
         exit 1
     fi
 }
-
 
 # Capture names of every branch merged to another (or default) branch
 list_merged_branches() {
@@ -92,7 +89,6 @@ list_merged_branches() {
     git branch --merged $branch --no-color | awk '{$1=$1};1' | grep -v $branch
 }
 
-
 # Capture parent branch of current branch
 git_parent_branch() {
     local current=${1:-$(get_current_branch)}
@@ -102,11 +98,11 @@ git_parent_branch() {
     local best_distance=$(calculate_distance $best_branch $current)
 
     for branch in $branches; do
-        [[ "$branch" == "$current" ]] && continue
+        [[ $branch == "$current" ]] && continue
 
         if is_ancestor "$branch" "$current"; then
             distance=$(calculate_distance $branch $current)
-            if (( distance < best_distance )); then
+            if ((distance < best_distance)); then
                 best_distance=$distance
                 best_branch=$branch
             fi
@@ -115,7 +111,6 @@ git_parent_branch() {
 
     echo "$best_branch"
 }
-
 
 # Prune branches that have been merged to (default) branch
 prune_branches() {
@@ -127,7 +122,6 @@ prune_branches() {
 
     list_merged_branches $branch | xargs -n 1 git branch -d
 }
-
 
 # sync a current branch with its parent (default) branch
 sync() {
@@ -141,8 +135,7 @@ sync() {
     fi
 
     # Sanity check II - confirm both branches exist.
-    for branch in $default $current
-    do
+    for branch in $default $current; do
         if ! validate $branch; then
             exit 1
         fi
@@ -157,7 +150,6 @@ sync() {
     git rebase $default
 }
 
-
 # list branches with a stacked PR
 get_stacked_branches() {
     local base_branch="$1"
@@ -169,11 +161,11 @@ get_stacked_branches() {
         --format='%(refname:short)' \
         --merged HEAD \
         refs/heads/ |
-    while read -r branch; do
-        [ "$branch" = "$base_branch" ] && continue
+        while read -r branch; do
+            [ "$branch" = "$base_branch" ] && continue
 
-        is_ancestor "$base_branch" "$branch" &&
-        is_ancestor "$branch" HEAD &&
-        echo "$branch"
-    done
+            is_ancestor "$base_branch" "$branch" &&
+                is_ancestor "$branch" HEAD &&
+                echo "$branch"
+        done
 }

@@ -29,14 +29,14 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# git-parent.sh
+# git-sha.sh
 #
-# Retrieve the closest parent branch from current active working branch.
+# Get the sha tag from the latest commit of the current branch.
 #
 # Example:
 #
 # ```sh
-# sh git-parent.sh
+# sh git-sha.sh
 #
 # ```
 #
@@ -49,7 +49,5 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     )"
     source "$Directory/lib.sh"
 
-    # default to current branch if no user arg is provided.
-    current_branch=${1:-$(get_current_branch)}
-    git_parent_branch $current_branch
+    get_current_sha
 fi

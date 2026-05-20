@@ -37,7 +37,6 @@
 # using a git flow model, where the primary development branch is not the default
 # branch.
 
-
 # Example:
 #
 # ```sh
@@ -48,7 +47,10 @@
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     # import common lib
-    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+    Directory="$(
+        cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+        pwd -P
+    )"
     source "$Directory/lib.sh"
 
     branch=${1:-$GIT_FLOW_BRANCH}

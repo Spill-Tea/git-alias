@@ -102,7 +102,7 @@ git_parent_branch() {
 
 		if is_ancestor "$branch" "$current"; then
 			distance=$(calculate_distance $branch $current)
-			if (distance <best_distance); then
+			if ((distance < best_distance)); then
 				best_distance=$distance
 				best_branch=$branch
 			fi

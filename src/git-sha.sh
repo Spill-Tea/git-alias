@@ -29,7 +29,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # git-sha.sh
 #
 # Get the sha tag from the latest commit of the current branch.
@@ -43,9 +42,12 @@
 #
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-    # import common lib
-    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
-    source "$Directory/lib.sh"
+	# import common lib
+	Directory="$(
+		cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+		pwd -P
+	)"
+	source "$Directory/lib.sh"
 
-    get_current_sha
+	get_current_sha
 fi

@@ -29,7 +29,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 # git-verify.sh
 #
 # Confirm that a branch name exists locally.
@@ -46,9 +45,12 @@
 #
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
-    # import common lib
-    Directory="$( cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
-    source "$Directory/lib.sh"
+	# import common lib
+	Directory="$(
+		cd -- "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1
+		pwd -P
+	)"
+	source "$Directory/lib.sh"
 
-    verify $1
+	verify $1
 fi

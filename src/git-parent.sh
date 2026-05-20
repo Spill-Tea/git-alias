@@ -53,6 +53,11 @@ Description:
 Options:
     -h, --help      Show this help message and exit
 
+Examples:
+    sh git-parent.sh
+    sh git-parent.sh feat-branch-1
+    sh git-parent.sh --help
+
 EOF
 }
 

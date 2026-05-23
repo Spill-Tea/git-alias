@@ -55,7 +55,7 @@ teardown() {
 
 
 @test "test is_ancestor mainA" {
-    run is_ancestor main $BRANCH_A 
+    run is_ancestor main $BRANCH_A
 
     [ $status -eq 0 ]
     [ -z $output ]

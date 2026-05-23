@@ -77,7 +77,7 @@ confirm_branch() {
 @test "Confirm lib fn output" {
   source "$DIR/lib.sh"
 
-  run get_current_branch 
+  run get_current_branch
 
   confirm_branch $CURRENT_BRANCH
 }

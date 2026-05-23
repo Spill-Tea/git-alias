@@ -70,7 +70,7 @@ confirm_verification() {
 @test "Confirm lib fn output failure" {
   source "$DIR/lib.sh"
 
-  run verify 
+  run verify
 
   [ "$status" -eq 1 ]
   [ -z "$output" ]

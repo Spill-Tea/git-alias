@@ -60,7 +60,7 @@ teardown() {
 @test "Confirm lib fn output" {
   source "$DIR/lib.sh"
 
-  run get_default_branch 
+  run get_default_branch
 
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]

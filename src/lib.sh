@@ -80,7 +80,7 @@ validate() {
 
 # list all branches (without any formatting)
 list_branches() {
-     git branch --format='%(refname:short)'
+    git branch --format='%(refname:short)'
 }
 
 # Capture names of every branch merged to another (or default) branch

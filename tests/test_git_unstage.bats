@@ -62,7 +62,7 @@ teardown() {
 
 # NOTE: we can unstage a file that is not currently staged without issue.
 @test "Confirm $NAME output unstaged file" {
-  run sh $SCRIPT "readme.md"
+  run sh $SCRIPT $FILE_NAME
 
   [ "$status" -eq 0 ]
   [ -z "$output" ]

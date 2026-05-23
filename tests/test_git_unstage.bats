@@ -4,12 +4,30 @@ load helpers/common.sh
 
 
 NAME="git-unstage.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
 
 
 setup() {
   source $SCRIPT
+
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+
+  # create and switch to a new branch name
+  CURRENT_BRANCH="busy_beaver"
+  create_branch $CURRENT_BRANCH
+
+  FILE_NAME="beaver.txt"
+  stage "build dam" $FILE_NAME
 }
+
+
+teardown() {
+  rm -rf $MOCK_REPO
+}
+
 
 
 @test "Confirm show_help_menu output" {

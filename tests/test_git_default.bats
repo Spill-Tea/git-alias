@@ -4,11 +4,25 @@ load helpers/common.sh
 
 
 NAME="git-default.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
 
 
 setup() {
   source $SCRIPT
+
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+
+  # create and switch to a new branch name
+  CURRENT_BRANCH="Narwhal"
+  create_branch $CURRENT_BRANCH
+}
+
+
+teardown() {
+  rm -rf $MOCK_REPO
 }
 
 
@@ -19,7 +33,7 @@ setup() {
 }
 
 
-@test "Confirm $NAME -h displays help menu" {
+@test "Confirm $NAME -h displays help menu 1" {
   run sh $SCRIPT -h
 
   _assert_help_menu_standard $NAME
@@ -38,5 +52,17 @@ setup() {
 
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
-  [ "$output" = "main" ]
+  [[ "$output" == "main" ]]
+
+}
+
+
+@test "Confirm lib fn output" {
+  source "$DIR/lib.sh"
+
+  run get_default_branch 
+
+  [ "$status" -eq 0 ]
+  ! [ -z "$output" ]
+  [[ "$output" == "main" ]]
 }

@@ -4,11 +4,26 @@ load helpers/common.sh
 
 
 NAME="git-parent.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
 
 
 setup() {
   source $SCRIPT
+
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+
+  # create and switch to a new branch name
+  CURRENT_BRANCH="Axoltl"
+  create_branch $CURRENT_BRANCH
+  add "i is salamander"
+}
+
+
+teardown() {
+  rm -rf $MOCK_REPO
 }
 
 
@@ -33,17 +48,48 @@ setup() {
 }
 
 
-@test "Confirm $NAME output" {
-  run sh $SCRIPT
+confirm_parent() {
+  local branch=$1
 
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
+  [[ "$output" = $branch ]]
 }
 
 
-@test "Confirm $NAME main output" {
-  run sh $SCRIPT main
+@test "Confirm $NAME output" {
+  run sh $SCRIPT
 
-  [ "$status" -eq 0 ]
-  [ "$output" = "main" ]
+  confirm_parent "main"
+}
+
+
+@test "Confirm $NAME output after additional checkout" {
+  # setup
+  local new_branch="Bear"
+  create_branch $new_branch
+  add "i is furry monster"
+
+  run sh $SCRIPT
+
+  confirm_parent $CURRENT_BRANCH
+}
+
+
+@test "Confirm $NAME with arg output" {
+  run sh $SCRIPT $CURRENT_BRANCH
+
+  confirm_parent "main"
+}
+
+
+@test "Confirm $NAME with arg output after additional checkout" {
+  # setup
+  local new_branch="lion"
+  create_branch $new_branch
+  add "oh my!"
+
+  run sh $SCRIPT $new_branch
+
+  confirm_parent $CURRENT_BRANCH
 }

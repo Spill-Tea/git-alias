@@ -4,15 +4,44 @@ load helpers/common.sh
 
 
 NAME="git-prune.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
+
+source $DIR/lib.sh
 
 
 setup() {
-  source $SCRIPT
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+
+  # Create a new branch with commit and push to remote
+  BRANCH="peeps"
+  create_branch $BRANCH
+  add "new_feature" "peep.py"
+  push $BRANCH
+
+  # merge new branch to main, and push main to remote
+  checkout "main"
+  merge $BRANCH "special peep branch."
+  push "main"
+
+  # setup decoy (unmerged) branch
+  DECOY_BRANCH="ducky_decoy"
+  create_branch $DECOY_BRANCH
+  add "quack" "duck.txt"
+  push $DECOY_BRANCH
+}
+
+
+teardown() {
+  rm -rf $MOCK_REPO
 }
 
 
 @test "Confirm show_help_menu output" {
+  source $SCRIPT
+
   run show_help_menu
 
   _assert_help_menu_standard $NAME
@@ -33,12 +62,29 @@ setup() {
 }
 
 
-# TODO: Need to consider how to set this up in a mock git repo
-#       such that we have a consistent expected result. And more
-#       methodical testing of edge cases.
-# @test "Confirm $NAME output" {
-#   run sh $SCRIPT
+confirm_pruning() {
+  local branch=$1
 
-#   [ "$status" -eq 0 ]
-#   ! [ -z "$output" ]
-# }
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "Deleted branch $branch"* ]]
+  ! [[ "$output" = *"$DECOY_BRANCH"* ]]
+
+  run list_branches
+
+  ! in_line $branch "${lines[@]}"
+  in_line $DECOY_BRANCH "${lines[@]}"
+}
+
+
+@test "Confirm $NAME output" {
+  run sh $SCRIPT
+
+  confirm_pruning $BRANCH
+}
+
+
+@test "Confirm lib fn output" {
+  run prune_branches
+
+  confirm_pruning $BRANCH
+}

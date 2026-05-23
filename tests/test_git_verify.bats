@@ -4,15 +4,25 @@ load helpers/common.sh
 
 
 NAME="git-verify.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
 
 
 setup() {
-  source $SCRIPT
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+}
+
+
+teardown() {
+  rm -rf $MOCK_REPO
 }
 
 
 @test "Confirm show_help_menu output" {
+  source $SCRIPT
+
   run show_help_menu
 
   _assert_help_menu_standard $NAME
@@ -42,11 +52,35 @@ setup() {
 }
 
 
-@test "Confirm $NAME output returns sha hash" {
-  run sh $SCRIPT main
-
+confirm_verification() {
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
   [[ "${#output}" -eq "40" ]]
   [[ "$output" =~ [a-z0-9]{40} ]]
+}
+
+
+@test "Confirm $NAME output returns sha hash" {
+  run sh $SCRIPT main
+
+  confirm_verification
+}
+
+
+@test "Confirm lib fn output failure" {
+  source "$DIR/lib.sh"
+
+  run verify 
+
+  [ "$status" -eq 1 ]
+  [ -z "$output" ]
+}
+
+
+@test "Confirm lib fn output" {
+  source "$DIR/lib.sh"
+
+  run verify main
+
+  confirm_verification
 }

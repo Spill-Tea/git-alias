@@ -4,11 +4,25 @@ load helpers/common.sh
 
 
 NAME="git-current.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
 
 
 setup() {
   source $SCRIPT
+
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+
+  # create and switch to a new branch name
+  CURRENT_BRANCH="Panda_Bear"
+  create_branch $CURRENT_BRANCH
+}
+
+
+teardown() {
+  rm -rf $MOCK_REPO
 }
 
 
@@ -33,9 +47,37 @@ setup() {
 }
 
 
-@test "Confirm $NAME output" {
-  run sh $SCRIPT
+confirm_branch() {
+  local branch=$1
 
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
+  [[ "$output" = "$branch" ]]
+}
+
+
+@test "Confirm $NAME output" {
+  run sh $SCRIPT
+
+  confirm_branch $CURRENT_BRANCH
+}
+
+
+@test "Confirm $NAME output after checkout" {
+  # checkout main
+  local b="main"
+  checkout $b
+
+  run sh $SCRIPT
+
+  confirm_branch $b
+}
+
+
+@test "Confirm lib fn output" {
+  source "$DIR/lib.sh"
+
+  run get_current_branch 
+
+  confirm_branch $CURRENT_BRANCH
 }

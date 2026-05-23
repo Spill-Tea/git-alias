@@ -4,15 +4,32 @@ load helpers/common.sh
 
 
 NAME="git-staged.sh"
-SCRIPT="$( dirname "$BATS_TEST_DIRNAME" )/src/$NAME"
+DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
+SCRIPT="$DIR/$NAME"
 
 
 setup() {
-  source $SCRIPT
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
+
+  # create and switch to a new branch name
+  CURRENT_BRANCH="busy_beaver"
+  create_branch $CURRENT_BRANCH
+
+  FILE_NAME="beaver.txt"
+  stage "must_chew_tree" $FILE_NAME
+}
+
+
+teardown() {
+  rm -rf $MOCK_REPO
 }
 
 
 @test "Confirm show_help_menu output" {
+  source $SCRIPT
+
   run show_help_menu
 
   _assert_help_menu_standard $NAME
@@ -33,10 +50,72 @@ setup() {
 }
 
 
-# TODO: Need mock git repo history.
-# @test "Confirm $NAME output" {
+confirm_staged() {
+  [ "$status" -eq 0 ]
+  ! [ -z "$output" ]
+  assert_lines_equal "$@"
+}
+
+
+@test "Confirm $NAME output" {
+  run sh $SCRIPT
+
+  confirm_staged $FILE_NAME
+}
+
+
+@test "Confirm $NAME output after git mv" {
+  local readme="readme.md"
+  local out="readmenot.md"
+  move $readme $out
+
+  run sh $SCRIPT
+
+  confirm_staged $FILE_NAME $out
+}
+
+
+# TODO: Diagnose why deleted file is not showing up in testing environment
+#       but works as expected when manually doing identical workflow...
+# @test "Confirm $NAME output after git rm" {
+#   local readme="readme.md"
+#   delete $readme
+
 #   run sh $SCRIPT
 
-#   [ "$status" -eq 0 ]
-#   ! [ -z "$output" ]
+#   confirm_staged $FILE_NAME $readme
+# }
+
+
+@test "Confirm lib fn output" {
+  source "$DIR/lib.sh"
+
+  run get_staged_files
+
+  confirm_staged $FILE_NAME
+}
+
+
+@test "Confirm lib fn output after git mv" {
+  source "$DIR/lib.sh"
+
+  local readme="readme.md"
+  local out="readmenot.md"
+  move $readme $out
+
+  run get_staged_files
+
+  confirm_staged $FILE_NAME $out
+}
+
+
+# @test "Confirm lib output after git rm" {
+#   source "$DIR/lib.sh"
+
+#   local readme="readme.md"
+#   delete $readme
+
+#   run get_staged_files
+
+#   confirm_staged $FILE_NAME $readme
 # }

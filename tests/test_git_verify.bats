@@ -84,3 +84,26 @@ confirm_verification() {
 
   confirm_verification
 }
+
+
+@test "Confirm lib fn validate output" {
+  source "$DIR/lib.sh"
+
+  run validate main
+
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}
+
+
+@test "Confirm lib fn validate output fail" {
+  source "$DIR/lib.sh"
+
+  local branch="mock_branch"
+  run validate $branch
+
+  [ "$status" -eq 1 ]
+  ! [ -z "$output" ]
+  [[ "$output" = "Aborting"* ]]
+  [[ "$output" = *"$branch"* ]]
+}

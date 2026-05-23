@@ -78,9 +78,14 @@ validate() {
     fi
 }
 
+# list all branches (without any formatting)
+list_branches() {
+    git branch --format='%(refname:short)'
+}
+
 # Capture names of every branch merged to another (or default) branch
 list_merged_branches() {
-    branch=${1:-$(get_default_branch)}
+    local branch=${1:-$(get_default_branch)}
 
     if ! validate $branch; then
         exit 1
@@ -97,6 +102,8 @@ git_parent_branch() {
     local best_branch=$(get_default_branch)
     local best_distance=$(calculate_distance $best_branch $current)
 
+    local branch
+    local distance
     for branch in $branches; do
         [[ $branch == "$current" ]] && continue
 
@@ -114,7 +121,7 @@ git_parent_branch() {
 
 # Prune branches that have been merged to (default) branch
 prune_branches() {
-    branch=${1:-$(get_default_branch)}
+    local branch=${1:-$(get_default_branch)}
 
     if ! validate $branch; then
         exit 1
@@ -125,8 +132,9 @@ prune_branches() {
 
 # sync a current branch with its parent (default) branch
 sync() {
-    default=${1:-$get_default_branch}
-    current=${2:-$(get_current_branch)}
+    local default=${1:-$get_default_branch}
+    local current=${2:-$(get_current_branch)}
+    local branch
 
     # Sanity check I - confirm branches differ.
     if [ $default = $current ]; then
@@ -153,6 +161,8 @@ sync() {
 # list branches with a stacked PR
 get_stacked_branches() {
     local base_branch="$1"
+    local branch
+
     if ! validate $base_branch; then
         exit 1
     fi
@@ -172,6 +182,7 @@ get_stacked_branches() {
 
 # Determine if script arguments contain "-h" or "--help" cli flags
 get_help() {
+    local arg
     for arg in "$@"; do
         case "$arg" in
         -h | --help)

@@ -47,13 +47,17 @@ teardown() {
 }
 
 
-@test "Confirm $NAME output" {
-  run sh $SCRIPT
-
+confirm_default() {
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
   [[ "$output" == "main" ]]
+}
 
+
+@test "Confirm $NAME output" {
+  run sh $SCRIPT
+
+  confirm_default
 }
 
 
@@ -62,7 +66,16 @@ teardown() {
 
   run get_default_branch
 
-  [ "$status" -eq 0 ]
-  ! [ -z "$output" ]
-  [[ "$output" == "main" ]]
+  confirm_default
+}
+
+
+@test "Confirm alias output" {
+  # create git alias to script
+  local name="nkl48sdp"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_default
 }

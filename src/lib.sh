@@ -74,7 +74,7 @@ validate() {
 
     if [[ -z $(verify $branch) ]]; then
         printf "Aborting. Branch does not exist locally in repo: $branch\n"
-        exit 1
+        return 1
     fi
 }
 
@@ -88,7 +88,7 @@ list_merged_branches() {
     local branch=${1:-$(get_default_branch)}
 
     if ! validate $branch; then
-        exit 1
+        return 1
     fi
 
     git branch --merged $branch --no-color | awk '{$1=$1};1' | grep -v $branch
@@ -124,7 +124,7 @@ prune_branches() {
     local branch=${1:-$(get_default_branch)}
 
     if ! validate $branch; then
-        exit 1
+        return 1
     fi
 
     list_merged_branches $branch | xargs -n 1 git branch -d
@@ -139,13 +139,13 @@ sync() {
     # Sanity check I - confirm branches differ.
     if [ $default = $current ]; then
         printf "Aborting. Both branches specified are identical.\n"
-        exit 1
+        return 1
     fi
 
     # Sanity check II - confirm both branches exist.
     for branch in $default $current; do
         if ! validate $branch; then
-            exit 1
+            return 1
         fi
     done
 
@@ -158,13 +158,26 @@ sync() {
     git rebase $default
 }
 
+# remove a file from staging
+unstage_file() {
+    local file_name=$1
+
+    # Abort if file does not exist.
+    if ! [[ -f $file_name ]]; then
+        printf "Aborting. File does not exist: $file_name\n"
+        return 1
+    fi
+
+    git restore --staged $file_name
+}
+
 # list branches with a stacked PR
 get_stacked_branches() {
     local base_branch="$1"
     local branch
 
     if ! validate $base_branch; then
-        exit 1
+        return 1
     fi
 
     git for-each-ref \

@@ -10,6 +10,7 @@ SCRIPT="$DIR/$NAME"
 
 setup() {
   source $SCRIPT
+  source $DIR/lib.sh
 
   # create mock git repo
   MOCK_REPO="$BATS_TEST_TMPDIR/repo"
@@ -51,12 +52,34 @@ teardown() {
 }
 
 
-@test "Confirm $NAME output without required argument" {
-  run sh $SCRIPT
+_assert_is_staged() {
+  run get_staged_files
+  in_line $1 "${lines[@]}"
+}
 
+
+confirm_unstaged() {
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+
+  ! in_line $1 "${lines[@]}"
+  ! _assert_is_staged $1
+}
+
+
+confirm_failed() {
   [ "$status" -eq 1 ]
   ! [ -z "$output" ]
   [[ "$output" =~ Aborting* ]]
+
+  _assert_is_staged $1
+}
+
+
+@test "Confirm $NAME output without required argument" {
+  run sh $SCRIPT
+
+  confirm_failed $FILE_NAME
 }
 
 
@@ -64,6 +87,41 @@ teardown() {
 @test "Confirm $NAME output unstaged file" {
   run sh $SCRIPT $FILE_NAME
 
-  [ "$status" -eq 0 ]
-  [ -z "$output" ]
+  confirm_unstaged $FILE_NAME
+}
+
+
+@test "Confirm lib fn output without required argument" {
+  run unstage_file
+
+  confirm_failed $FILE_NAME
+}
+
+
+@test "Confirm lib fn output unstaged file" {
+  run unstage_file $FILE_NAME
+
+  confirm_unstaged $FILE_NAME
+}
+
+
+@test "Confirm alias output without required argument" {
+  # create git alias to script
+  local name="vv5h43mqz"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_failed $FILE_NAME
+}
+
+
+@test "Confirm alias output unstaged file" {
+  # create git alias to script
+  local name="vv5h43mqz"
+  alias $name $SCRIPT
+
+  run git $name $FILE_NAME
+
+  confirm_unstaged $FILE_NAME
 }

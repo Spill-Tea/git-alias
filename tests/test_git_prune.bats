@@ -88,3 +88,14 @@ confirm_pruning() {
 
   confirm_pruning $BRANCH
 }
+
+
+@test "Confirm alias output" {
+  # create git alias to script
+  local name="nsfchv335s"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_pruning $BRANCH
+}

@@ -82,7 +82,7 @@ stage() {
         f="file.txt"
     fi
 
-    echo "$message" >>$f
+    echo "$msg" >>$f
 
     git add $f >/dev/null 2>&1
 }
@@ -143,6 +143,14 @@ sort_lines() {
     printf '%s\n' "$@" | sort
 }
 
+# create a git alias
+alias() {
+    git config \
+        "alias.$1" \
+        "!sh \"$2\"" \
+        >/dev/null 2>&1
+}
+
 # Compare variable args to lines captured are equivalent (useful for multiline output)
 # lines and input args are sorted, such that the order is irrelevant
 assert_lines_equal() {
@@ -166,7 +174,7 @@ assert_lines_equal() {
     done
 }
 
-# value within an array
+# determine if value is within an array
 in_line() {
     local needle="$1"
     shift
@@ -179,6 +187,7 @@ in_line() {
     return 1
 }
 
+# determine if a value is (approximately) within an array
 approx_in_line() {
     local needle="$1"
     shift

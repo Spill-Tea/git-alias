@@ -64,3 +64,14 @@ confirm_sha() {
 
   confirm_sha
 }
+
+
+@test "Confirm alias output" {
+  # create git alias to script
+  local name="vv5wq1l8i"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_sha
+}

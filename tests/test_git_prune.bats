@@ -91,7 +91,7 @@ confirm_pruning() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="nsfchv335s"
   alias $name $SCRIPT
 

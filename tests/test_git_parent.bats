@@ -96,7 +96,7 @@ confirm_parent() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="nsfchv335s"
   alias $name $SCRIPT
 
@@ -112,7 +112,7 @@ confirm_parent() {
   create_branch $new_branch
   add "i is furry monster"
 
-  # create git alias to script 
+  # create git alias to script
   local name="nsfchv335s"
   alias $name $SCRIPT
 
@@ -123,7 +123,7 @@ confirm_parent() {
 
 
 @test "Confirm alias with arg output" {
-  # create git alias to script 
+  # create git alias to script
   local name="nsfchv335s"
   alias $name $SCRIPT
 
@@ -134,7 +134,7 @@ confirm_parent() {
 
 
 @test "Confirm alias with arg output after additional checkout" {
-  # create git alias to script 
+  # create git alias to script
   local name="nsfchv335s"
   alias $name $SCRIPT
 

@@ -71,7 +71,7 @@ confirm_default() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="nkl48sdp"
   alias $name $SCRIPT
 

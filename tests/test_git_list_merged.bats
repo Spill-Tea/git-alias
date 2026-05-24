@@ -69,7 +69,7 @@ confirm_branch() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="hr601zs45"
   alias $name $SCRIPT
 

@@ -122,7 +122,7 @@ confirm_staged() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="ks882lw"
   alias $name $SCRIPT
 
@@ -133,7 +133,7 @@ confirm_staged() {
 
 
 @test "Confirm alias output after git mv" {
-  # create git alias to script 
+  # create git alias to script
   local name="ks882lw"
   alias $name $SCRIPT
 

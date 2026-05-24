@@ -70,7 +70,7 @@ teardown() {
 
 
 @test "Confirm alias output without required argument" {
-  # create git alias to script 
+  # create git alias to script
   local name="vv5h43mqz"
   alias $name $SCRIPT
 
@@ -83,7 +83,7 @@ teardown() {
 
 
 @test "Confirm alias output unstaged file" {
-  # create git alias to script 
+  # create git alias to script
   local name="vv5h43mqz"
   alias $name $SCRIPT
 

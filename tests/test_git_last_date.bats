@@ -74,7 +74,7 @@ confirm_date_format() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="pe50wcmztu"
   alias $name $SCRIPT
 

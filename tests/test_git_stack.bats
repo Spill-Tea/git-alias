@@ -82,7 +82,7 @@ confirm_stack() {
 
 
 @test "Confirm alias output" {
-  # create git alias to script 
+  # create git alias to script
   local name="h5rdss9lk"
   alias $name $SCRIPT
 

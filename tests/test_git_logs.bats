@@ -62,7 +62,7 @@ confirm_log_format() {
 
 
 @test "Confirm $NAME output" {
-  # create git alias to script 
+  # create git alias to script
   local name="jJ2Waxzp073"
   alias $name $SCRIPT
 

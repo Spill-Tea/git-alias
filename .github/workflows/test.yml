@@ -12,6 +12,7 @@ on:
 
 env:
   FORCE_COLOR: "1"
+  TERM: "xterm-256color"
 
 jobs:
   # This workflow contains a single job called "build"

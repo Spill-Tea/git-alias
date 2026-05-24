@@ -82,7 +82,7 @@ stage() {
         f="file.txt"
     fi
 
-    echo "$message" >>$f
+    echo "$msg" >>$f
 
     git add $f >/dev/null 2>&1
 }
@@ -166,7 +166,7 @@ assert_lines_equal() {
     done
 }
 
-# value within an array
+# determine if value is within an array
 in_line() {
     local needle="$1"
     shift
@@ -179,6 +179,7 @@ in_line() {
     return 1
 }
 
+# determine if a value is (approximately) within an array
 approx_in_line() {
     local needle="$1"
     shift

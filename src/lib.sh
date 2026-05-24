@@ -74,7 +74,7 @@ validate() {
 
     if [[ -z $(verify $branch) ]]; then
         printf "Aborting. Branch does not exist locally in repo: $branch\n"
-        exit 1
+        return 1
     fi
 }
 
@@ -88,7 +88,7 @@ list_merged_branches() {
     local branch=${1:-$(get_default_branch)}
 
     if ! validate $branch; then
-        exit 1
+        return 1
     fi
 
     git branch --merged $branch --no-color | awk '{$1=$1};1' | grep -v $branch
@@ -124,7 +124,7 @@ prune_branches() {
     local branch=${1:-$(get_default_branch)}
 
     if ! validate $branch; then
-        exit 1
+        return 1
     fi
 
     list_merged_branches $branch | xargs -n 1 git branch -d
@@ -139,13 +139,13 @@ sync() {
     # Sanity check I - confirm branches differ.
     if [ $default = $current ]; then
         printf "Aborting. Both branches specified are identical.\n"
-        exit 1
+        return 1
     fi
 
     # Sanity check II - confirm both branches exist.
     for branch in $default $current; do
         if ! validate $branch; then
-            exit 1
+            return 1
         fi
     done
 
@@ -164,7 +164,7 @@ get_stacked_branches() {
     local branch
 
     if ! validate $base_branch; then
-        exit 1
+        return 1
     fi
 
     git for-each-ref \

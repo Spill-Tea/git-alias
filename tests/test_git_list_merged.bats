@@ -54,12 +54,28 @@ teardown() {
 }
 
 
-@test "Confirm $NAME output" {
-  run sh $SCRIPT
-
+confirm_branch() {
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
   [[ "$output" = $BRANCH ]]
+}
+
+
+@test "Confirm $NAME output" {
+  run sh $SCRIPT
+
+  confirm_branch
+}
+
+
+@test "Confirm alias output" {
+  # create git alias to script 
+  local name="hr601zs45"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_branch
 }
 
 
@@ -68,9 +84,7 @@ teardown() {
 
   run list_merged_branches
 
-  [ "$status" -eq 0 ]
-  ! [ -z "$output" ]
-  [[ "$output" = $BRANCH ]]
+  confirm_branch
 }
 
 
@@ -80,6 +94,5 @@ teardown() {
   run list_merged_branches "invalid_branch_name"
 
   [ "$status" -eq 1 ]
-  ! [ -z "$output" ]
   [[ "$output" = "Aborting."* ]]
 }

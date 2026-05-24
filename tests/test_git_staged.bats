@@ -119,3 +119,29 @@ confirm_staged() {
 
 #   confirm_staged $FILE_NAME $readme
 # }
+
+
+@test "Confirm alias output" {
+  # create git alias to script 
+  local name="ks882lw"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_staged $FILE_NAME
+}
+
+
+@test "Confirm alias output after git mv" {
+  # create git alias to script 
+  local name="ks882lw"
+  alias $name $SCRIPT
+
+  local readme="readme.md"
+  local out="readmenot.md"
+  move $readme $out
+
+  run git $name
+
+  confirm_staged $FILE_NAME $out
+}

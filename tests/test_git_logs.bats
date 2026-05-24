@@ -62,6 +62,18 @@ confirm_log_format() {
 
 
 @test "Confirm $NAME output" {
+  # create git alias to script 
+  local name="jJ2Waxzp073"
+  alias $name $SCRIPT
+
+  for p in 1 2 3; do
+    run git $name -n $p
+    confirm_log_format $p
+  done
+}
+
+
+@test "Confirm alias output" {
 
   for p in 1 2 3; do
     run sh $SCRIPT -n $p

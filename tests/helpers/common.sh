@@ -143,6 +143,14 @@ sort_lines() {
     printf '%s\n' "$@" | sort
 }
 
+# create a git alias
+alias() {
+    git config \
+        "alias.$1" \
+        "!sh \"$2\"" \
+        >/dev/null 2>&1
+}
+
 # Compare variable args to lines captured are equivalent (useful for multiline output)
 # lines and input args are sorted, such that the order is irrelevant
 assert_lines_equal() {

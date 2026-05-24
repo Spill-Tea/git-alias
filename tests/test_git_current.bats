@@ -81,3 +81,42 @@ confirm_branch() {
 
   confirm_branch $CURRENT_BRANCH
 }
+
+
+@test "Confirm lib fn output after checkout" {
+  source "$DIR/lib.sh"
+
+  # checkout main
+  local b="main"
+  checkout $b
+
+  run get_current_branch
+
+  confirm_branch $b
+}
+
+
+@test "Confirm alias output" {
+  # create alias to script
+  local name="nxrtowpl"
+  alias $name "$SCRIPT"
+
+  run git $name
+
+  confirm_branch $CURRENT_BRANCH
+}
+
+
+@test "Confirm alias output after checkout" {
+  # checkout main
+  local b="main"
+  checkout $b
+
+  # create alias to script
+  local name="x4thqlp"
+  alias $name "$SCRIPT"
+
+  run git $name
+
+  confirm_branch $b
+}

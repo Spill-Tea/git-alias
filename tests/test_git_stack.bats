@@ -79,3 +79,14 @@ confirm_stack() {
 
   confirm_stack "$BRANCH1" "$BRANCH2"
 }
+
+
+@test "Confirm alias output" {
+  # create git alias to script 
+  local name="h5rdss9lk"
+  alias $name $SCRIPT
+
+  run git $name
+
+  confirm_stack "$BRANCH1" "$BRANCH2"
+}

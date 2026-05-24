@@ -67,3 +67,28 @@ teardown() {
   [ "$status" -eq 0 ]
   [ -z "$output" ]
 }
+
+
+@test "Confirm alias output without required argument" {
+  # create git alias to script 
+  local name="vv5h43mqz"
+  alias $name $SCRIPT
+
+  run git $name
+
+  [ "$status" -eq 1 ]
+  ! [ -z "$output" ]
+  [[ "$output" =~ Aborting* ]]
+}
+
+
+@test "Confirm alias output unstaged file" {
+  # create git alias to script 
+  local name="vv5h43mqz"
+  alias $name $SCRIPT
+
+  run git $name $FILE_NAME
+
+  [ "$status" -eq 0 ]
+  [ -z "$output" ]
+}

@@ -75,16 +75,14 @@ confirm_staged() {
 }
 
 
-# TODO: Diagnose why deleted file is not showing up in testing environment
-#       but works as expected when manually doing identical workflow...
-# @test "Confirm $NAME output after git rm" {
-#   local readme="readme.md"
-#   delete $readme
+@test "Confirm $NAME output after git rm" {
+  local readme="readme.md"
+  delete $readme
 
-#   run sh $SCRIPT
+  run sh $SCRIPT
 
-#   confirm_staged $FILE_NAME $readme
-# }
+  confirm_staged $FILE_NAME $readme
+}
 
 
 @test "Confirm lib fn output" {
@@ -109,16 +107,16 @@ confirm_staged() {
 }
 
 
-# @test "Confirm lib output after git rm" {
-#   source "$DIR/lib.sh"
+@test "Confirm lib output after git rm" {
+  source "$DIR/lib.sh"
 
-#   local readme="readme.md"
-#   delete $readme
+  local readme="readme.md"
+  delete $readme
 
-#   run get_staged_files
+  run get_staged_files
 
-#   confirm_staged $FILE_NAME $readme
-# }
+  confirm_staged $FILE_NAME $readme
+}
 
 
 @test "Confirm alias output" {
@@ -144,4 +142,19 @@ confirm_staged() {
   run git $name
 
   confirm_staged $FILE_NAME $out
+}
+
+
+@test "Confirm alias output after git rm" {
+  # create git alias to script
+  local name="ks882lw"
+  alias $name $SCRIPT
+
+  # remove file from git repo
+  local readme="readme.md"
+  delete $readme
+
+  run git $name
+
+  confirm_staged $FILE_NAME $readme
 }

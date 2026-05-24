@@ -34,4 +34,9 @@ jobs:
 
       - name: Run BATS tests
         run: |
-          tests/bats/bin/bats --pretty --timing tests/
+          tests/bats/bin/bats \
+            --pretty \
+            --timing \
+            --print-output-on-failure \
+            --line-reference-format colon \
+            tests/

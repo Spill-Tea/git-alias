@@ -159,7 +159,7 @@ sort_lines() {
 alias() {
     git config \
         "alias.$1" \
-        "!sh \"$2\"" \
+        "!bash \"$2\"" \
         >/dev/null 2>&1
 }
 

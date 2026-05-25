@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # BSD 3-Clause License
 #
 # Copyright (c) 2026, Spill-Tea
@@ -74,77 +75,36 @@ initialize_repo() {
     checkout main
 }
 
-# stage a file for commit
-# stage() {
-#     local msg=$1
-#     local f=$2
-#     if [ -z $f ]; then
-#         f="file.txt"
-#     fi
-
-#     echo "$msg" >>$f
-
-#     git add $f >/dev/null 2>&1
-# }
-
-# stage() {
-#     local msg=$1
-#     local file=$2
-
-#     echo "$msg" >>$file
-
-#     git add -- "$file" >/dev/null 2>&1  
-# }
-
-# commit new file
-# add() {
-#     local msg=$1
-
-#     stage $msg $2
-#     commit $msg
-# }
-# add() {
-#     local msg=$1
-#     local file=$2
-
-#     echo "$msg" >>$file
-
-#     git add -- "$file" >/dev/null 2>&1
-#     git commit -m "$msg" >/dev/null 2>&1
-# }
-
 # Create and stage (git add) a file.
 # Usage:
 #   stage "commit message" "path/to/file.txt"
 stage() {
-  local msg="$1"
-  local file="$2"
-  if [ -z $file ]; then
-    file="file.txt"
-  fi
-  echo "$msg" >>$file
+    local msg="$1"
+    local file="$2"
+    if [ -z $file ]; then
+        file="file.txt"
+    fi
+    echo "$msg" >>$file
 
-  git add -- "$file" >/dev/null 2>&1
+    git add -- "$file" >/dev/null 2>&1
 }
 
 # Create a commit.
 # Usage:
 #   git_commit "commit message"
 commit() {
-  local msg="$1"
-
-  git commit --allow-empty -qm "$msg" >/dev/null 2>&1
+    git commit --allow-empty -qm "$1" >/dev/null 2>&1
 }
 
 # Stage a file and create a commit.
 # Usage:
 #   git_add_commit "path/to/file.txt" "commit message"
 add() {
-  local msg="$1"
-  local file="$2"
+    local msg="$1"
+    local file="$2"
 
-  stage "$msg" "$file"
-  commit "$msg"
+    stage $msg $file
+    commit $msg
 }
 
 # delete a file from git

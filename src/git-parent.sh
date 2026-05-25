@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-parent.sh
+# bash git-parent.sh
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-parent.sh  [options] [branch_name]
+    bash git-parent.sh  [options] [branch_name]
 
 Description:
     Retrieve the name of the closest parent branch ancestor. If no positional argument
@@ -54,9 +54,9 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-parent.sh
-    sh git-parent.sh feat-branch-1
-    sh git-parent.sh --help
+    bash git-parent.sh
+    bash git-parent.sh feat-branch-1
+    bash git-parent.sh --help
 
 EOF
 }

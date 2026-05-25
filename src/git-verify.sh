@@ -39,7 +39,7 @@
 # Example:
 #
 # ```sh
-# sh git-verify.sh {branch_name}
+# bash git-verify.sh {branch_name}
 #
 # ```
 #
@@ -47,7 +47,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-verify.sh [options] <branch_name>
+    bash git-verify.sh [options] <branch_name>
 
 Description:
     Confirm that a branch name exists locally. If the branch exists, the long sha tag
@@ -57,8 +57,8 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-verify.sh main
-    sh git-verify.sh --help
+    bash git-verify.sh main
+    bash git-verify.sh --help
 
 EOF
 }

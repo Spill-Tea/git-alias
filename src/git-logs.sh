@@ -36,8 +36,8 @@
 # Example:
 #
 # ```sh
-# sh git-logs.sh
-# sh git-logs.sh -n 5
+# bash git-logs.sh
+# bash git-logs.sh -n 5
 #
 # ```
 #
@@ -45,7 +45,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-logs.sh [options]
+    bash git-logs.sh [options]
 
 Description:
     Pretty print commit logs. Use identically to git log command. For more details
@@ -55,9 +55,9 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-logs.sh
-    sh git-logs.sh -n 1
-    sh git-logs.sh --help
+    bash git-logs.sh
+    bash git-logs.sh -n 1
+    bash git-logs.sh --help
 
 EOF
 }

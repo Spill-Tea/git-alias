@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-unstage.sh {file name}
+# bash git-unstage.sh {file name}
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-unstage.sh [options] [file_name]
+    bash git-unstage.sh [options] [file_name]
 
 Description:
     Unstage a specific file for commit (i.e. undo git add command).
@@ -53,8 +53,8 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-unstage.sh example.txt
-    sh git-unstage.sh --help
+    bash git-unstage.sh example.txt
+    bash git-unstage.sh --help
 
 EOF
 }

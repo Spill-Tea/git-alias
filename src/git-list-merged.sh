@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-list-merged.sh {default_branch}
+# bash git-list-merged.sh {default_branch}
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-list-merged.sh [options] [branch_name]
+    bash git-list-merged.sh [options] [branch_name]
 
 Description:
     List the names of every branch that has been merged to the user defined branch.
@@ -54,9 +54,9 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-list-merged.sh
-    sh git-list-merged.sh main
-    sh git-list-merged.sh --help
+    bash git-list-merged.sh
+    bash git-list-merged.sh main
+    bash git-list-merged.sh --help
 
 EOF
 }

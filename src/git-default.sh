@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-default.sh
+# bash git-default.sh
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-default.sh [options]
+    bash git-default.sh [options]
 
 Description:
     Retrieve the name of the default branch of a repository.
@@ -53,8 +53,8 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-default.sh
-    sh git-default.sh --help
+    bash git-default.sh
+    bash git-default.sh --help
 
 EOF
 }

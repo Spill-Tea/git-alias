@@ -40,7 +40,7 @@
 # Example:
 #
 # ```sh
-# sh git-prune.sh {default_branch}
+# bash git-prune.sh {default_branch}
 #
 # ```
 #
@@ -48,7 +48,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-prune.sh [options] [branch_name]
+    bash git-prune.sh [options] [branch_name]
 
 Description:
     Prunes stale local branches that have been merged upstream to a defined branch. If
@@ -61,10 +61,10 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-prune.sh
-    sh git-prune.sh main
-    GIT_FLOW_BRANCH=dev sh git-prune.sh
-    sh git-prune.sh --help
+    bash git-prune.sh
+    bash git-prune.sh main
+    GIT_FLOW_BRANCH=dev bash git-prune.sh
+    bash git-prune.sh --help
 
 EOF
 }

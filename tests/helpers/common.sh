@@ -88,7 +88,7 @@ setup_user() {
 
 # Create and stage (git add) a file.
 # Usage:
-#   stage "commit message" "path/to/file.txt"
+#   stage <commit message> [path/to/file.txt]
 stage() {
     local msg=$1
     local file=$2
@@ -102,14 +102,14 @@ stage() {
 
 # Commit changes.
 # Usage:
-#   git_commit "commit message"
+#   git_commit <commit message>
 commit() {
     git commit --allow-empty -qm "$1" >/dev/null 2>&1
 }
 
 # Create a file and commit changes.
 # Usage:
-#   git_add_commit "path/to/file.txt" "commit message"
+#   git_add_commit <commit message> <path/to/file.txt> 
 add() {
     local msg=$1
     local file=$2
@@ -120,28 +120,28 @@ add() {
 
 # delete a file from git.
 # Usage:
-#   delete "path/to/file.txt"
+#   delete <path/to/file.txt>
 delete() {
     git rm $1 >/dev/null 2>&1
 }
 
 # move (i.e. rename) a file in git.
 # Usage:
-#   move "current path" "new path"
+#   move <current path> <new path>
 move() {
     git mv $1 $2 >/dev/null 2>&1
 }
 
 # create a new branch.
 # Usage:
-#   create_branch "branch name"
+#   create_branch <branch name>
 create_branch() {
     git checkout -qb $1 >/dev/null 2>&1
 }
 
 # checkout an existing branch.
 # Usage:
-#   checkout "branch name"
+#   checkout <branch name>
 checkout() {
     git checkout $1 >/dev/null 2>&1
 }
@@ -155,28 +155,28 @@ pull() {
 
 # push a branch to remote.
 # Usage:
-#   push "branch name"
+#   push <branch name>
 push() {
     git push -u origin $1 >/dev/null 2>&1
 }
 
 # merge with branch.
 # Usage:
-#   merge "feature branch name" "commit message"
+#   merge <branch name> <commit message>
 merge() {
     git merge $1 -m "$2" >/dev/null 2>&1
 }
 
 # sort variable number of args separated by new line.
 # Usage:
-#   sort_lines $@
+#   sort_lines [@]
 sort_lines() {
     printf '%s\n' "$@" | sort
 }
 
-# create a git alias.
+# create a git alias to a bash script.
 # Usage:
-#   alias "alias name" "script path"
+#   alias <alias name> <path/to/script>
 alias() {
     git config \
         "alias.$1" \
@@ -187,7 +187,7 @@ alias() {
 # Compare variable args to lines captured are equivalent (useful for multiline output)
 # lines and input args are sorted, such that the order is irrelevant.
 # Usage:
-#   assert_lines_equal $@
+#   assert_lines_equal [@]
 assert_lines_equal() {
     local i
     local count=${#lines[@]}
@@ -211,7 +211,7 @@ assert_lines_equal() {
 
 # determine if a target value is within an array.
 # Usage:
-#   in_line "target value" $@
+#   in_line <target value> [@]
 in_line() {
     local needle="$1"
     shift
@@ -226,7 +226,7 @@ in_line() {
 
 # determine if a value is approximately (regex) contained within an array.
 # Usage:
-#   approx_in_line "target value" $@
+#   approx_in_line <target value> [@]
 approx_in_line() {
     local needle="$1"
     shift

@@ -19,17 +19,17 @@ setup() {
   # create linked branches
   BRANCH_A="otter"
   create_branch $BRANCH_A
-  add "a" "$BRANCH_A.txt"
+  add a $BRANCH_A.txt
 
   BRANCH_B="capybara"
   create_branch $BRANCH_B
-  add "b" "$BRANCH_B.txt"
+  add b $BRANCH_B.txt
 
   # create independent branch
   checkout main
   BRANCH_C="echidna"
   create_branch $BRANCH_C
-  add "c" "$BRANCH_C.txt"
+  add c $BRANCH_C.txt
 }
 
 

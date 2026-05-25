@@ -64,8 +64,7 @@ initialize_repo() {
     cd $SEED || exit 1
 
     git init -q -b main >/dev/null
-    git config user.name "Test User"
-    git config user.email "test@example.com"
+    setup_user
     add "project_setup" "readme.md"
     git remote add origin "$REMOTE"
 
@@ -76,6 +75,15 @@ initialize_repo() {
     git clone "$REMOTE" "$WORK" >/dev/null 2>&1
     cd "$WORK" || exit 1
     checkout main
+    setup_user
+}
+
+# setup example user name and email
+# Usage:
+#   setup_user
+setup_user() {
+    git config user.name "Test User"
+    git config user.email "test@example.com"
 }
 
 # Create and stage (git add) a file.

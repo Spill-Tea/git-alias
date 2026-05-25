@@ -48,7 +48,7 @@ confirm_date_format() {
   local d="[0-9]"
   local date="^$d{4}-[01]$d-[0-3]$d"
   local time="T[0-2]$d:[0-5]$d:[0-5]$d"
-  local zone="[+-][0-2]$d:[0-5]$d"
+  local zone="Z|[+-][0-2]$d:[0-5]$d"
 
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]

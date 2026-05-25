@@ -103,8 +103,8 @@ add() {
     local msg="$1"
     local file="$2"
 
-    stage $msg $file
-    commit $msg
+    stage "$msg" "$file"
+    commit "$msg"
 }
 
 # delete a file from git

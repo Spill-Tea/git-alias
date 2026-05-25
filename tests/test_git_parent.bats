@@ -18,7 +18,7 @@ setup() {
   # create and switch to a new branch name
   CURRENT_BRANCH="Axoltl"
   create_branch $CURRENT_BRANCH
-  add "i is salamander"
+  add "i_is_salamander"
 }
 
 
@@ -68,7 +68,7 @@ confirm_parent() {
   # setup
   local new_branch="Bear"
   create_branch $new_branch
-  add "i is furry monster"
+  add "i_is_furry_monster"
 
   run bash $SCRIPT
 
@@ -87,7 +87,7 @@ confirm_parent() {
   # setup
   local new_branch="lion"
   create_branch $new_branch
-  add "oh my!"
+  add "oh_my!"
 
   run bash $SCRIPT $new_branch
 
@@ -110,7 +110,7 @@ confirm_parent() {
   # setup
   local new_branch="Bear"
   create_branch $new_branch
-  add "i is furry monster"
+  add "i_is_furry_monster"
 
   # create git alias to script
   local name="nsfchv335s"
@@ -141,7 +141,7 @@ confirm_parent() {
   # setup
   local new_branch="lion"
   create_branch $new_branch
-  add "oh my!"
+  add "oh_my!"
 
   run git $name $new_branch
 

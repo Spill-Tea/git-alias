@@ -16,8 +16,8 @@ setup() {
   initialize_repo $MOCK_REPO
 
   # Create a few more commits (so we have 3 at least)
-  add "msg 1"
-  add "msg 2"
+  add "msg1"
+  add "msg2"
 }
 
 

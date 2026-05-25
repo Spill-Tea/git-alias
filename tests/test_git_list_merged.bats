@@ -18,7 +18,7 @@ setup() {
   # Create a new branch with commit and push to remote
   BRANCH="Unicorns"
   create_branch $BRANCH
-  add "new feature" "unicorn.py"
+  add "new_feature" "unicorn.py"
   push $BRANCH
 
   # merge new branch to main, and push main to remote

@@ -30,27 +30,37 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Capture repository default branch name
+# Usage:
+#   get_default_branch
 get_default_branch() {
     git symbolic-ref refs/remotes/origin/HEAD |
         sed 's@^refs/remotes/origin/@@'
 }
 
 # Get name of current working branch
+# Usage:
+#   get_current_branch
 get_current_branch() {
     git rev-parse --abbrev-ref HEAD
 }
 
 # Get latest sha hash tag
+# Usage:
+#   get_current_sha
 get_current_sha() {
     git rev-parse --short HEAD
 }
 
 # list currently staged file names
+# Usage:
+#   get_staged_files
 get_staged_files() {
     git diff --cached --name-only
 }
 
 # Compute distance between two branches.
+# Usage:
+#   calculate_distance <parent branch name> <ancestor branch name>
 calculate_distance() {
     local branch=$1
     local ancestor=$2
@@ -59,16 +69,22 @@ calculate_distance() {
 }
 
 # Identify if two branches are ancestrally linked.
+# Usage:
+#   is_ancestor <parent branch name> <ancestor branch name>
 is_ancestor() {
     git merge-base --is-ancestor $1 $2
 }
 
 # Confirm a branch name exists
+# Usage:
+#   verify <branch name>
 verify() {
     git rev-parse --quiet --verify $1
 }
 
 # Confirm a branch exists within a repository
+# Usage:
+#   validate <branch name>
 validate() {
     local branch=$1
 
@@ -79,11 +95,15 @@ validate() {
 }
 
 # list all branches (without any formatting)
+# Usage:
+#   list_branches
 list_branches() {
     git branch --format='%(refname:short)'
 }
 
 # Capture names of every branch merged to another (or default) branch
+# Usage:
+#   list_merged_branches [target branch name]
 list_merged_branches() {
     local branch=${1:-$(get_default_branch)}
 
@@ -95,6 +115,8 @@ list_merged_branches() {
 }
 
 # Capture parent branch of current branch
+# Usage:
+#   git_parent_branch [branch name] [array of branch names to search]
 git_parent_branch() {
     local current=${1:-$(get_current_branch)}
     local branches=${2:-$(git for-each-ref --format='%(refname:short)' refs/heads/)}
@@ -120,6 +142,8 @@ git_parent_branch() {
 }
 
 # Prune branches that have been merged to (default) branch
+# Usage:
+#   prune_branches [target branch name]
 prune_branches() {
     local branch=${1:-$(get_default_branch)}
 
@@ -131,6 +155,8 @@ prune_branches() {
 }
 
 # sync a current branch with its parent (default) branch
+# Usage:
+#   sync [parent branch name] [target branch name]
 sync() {
     local default=${1:-$get_default_branch}
     local current=${2:-$(get_current_branch)}
@@ -159,6 +185,8 @@ sync() {
 }
 
 # remove a file from staging
+# Usage:
+#   unstage_file <file name>
 unstage_file() {
     local file_name=$1
 
@@ -172,6 +200,8 @@ unstage_file() {
 }
 
 # list branches with a stacked PR
+# Usage:
+#   get_stacked_branches <branch name>
 get_stacked_branches() {
     local base_branch="$1"
     local branch
@@ -194,6 +224,8 @@ get_stacked_branches() {
 }
 
 # Determine if script arguments contain "-h" or "--help" cli flags
+# Usage:
+#   get_help [@]
 get_help() {
     local arg
     for arg in "$@"; do

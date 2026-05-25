@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # BSD 3-Clause License
 #
@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-last-date.sh
+# bash git-last-date.sh
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-last-date.sh [options]
+    bash git-last-date.sh [options]
 
 Description:
     Retrieve the date of the most current commit in ISO8601 format.
@@ -53,14 +53,14 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-last-date.sh
-    sh git-last-date.sh --help
+    bash git-last-date.sh
+    bash git-last-date.sh --help
 
 EOF
 }
 
 get_last_date() {
-    git log -1 --format="%cI"
+    git log -1 --date=iso-strict --format="%aI"
 }
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # BSD 3-Clause License
 #
@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-sha.sh
+# bash git-sha.sh
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-sha.sh [options]
+    bash git-sha.sh [options]
 
 Description:
     Get the sha tag from the most current commit.
@@ -53,8 +53,8 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-sha.sh
-    sh git-sha.sh --help
+    bash git-sha.sh
+    bash git-sha.sh --help
 
 EOF
 }

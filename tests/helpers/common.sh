@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # BSD 3-Clause License
 #
 # Copyright (c) 2026, Spill-Tea
@@ -28,8 +29,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# confirm help menu displays correctly and conforms
-# to standardized format presentation.
+# confirm help menu displays correctly and conforms to standardized format presentation.
+# Usage:
+#   _assert_help_menu_standard "script name"
 _assert_help_menu_standard() {
     local name=$1
 
@@ -44,7 +46,9 @@ _assert_help_menu_standard() {
     [[ $output == *"$name"* ]]
 }
 
-# create new cloned git repo (with initial commits, refs, and default branch)
+# create new cloned git repo (with initial commits, refs, and default branch).
+# Usage:
+#   initialize_repo "path/to/repo"
 initialize_repo() {
     local path=$1
 
@@ -60,8 +64,7 @@ initialize_repo() {
     cd $SEED || exit 1
 
     git init -q -b main >/dev/null
-    git config user.name "Test User"
-    git config user.email "test@example.com"
+    setup_user
     add "project_setup" "readme.md"
     git remote add origin "$REMOTE"
 
@@ -72,87 +75,119 @@ initialize_repo() {
     git clone "$REMOTE" "$WORK" >/dev/null 2>&1
     cd "$WORK" || exit 1
     checkout main
+    setup_user
 }
 
-# stage a file for commit
+# setup example user name and email
+# Usage:
+#   setup_user
+setup_user() {
+    git config user.name "Test User"
+    git config user.email "test@example.com"
+}
+
+# Create and stage (git add) a file.
+# Usage:
+#   stage "commit message" "path/to/file.txt"
 stage() {
     local msg=$1
-    local f=$2
-    if [ -z $f ]; then
-        f="file.txt"
+    local file=$2
+    if [ -z $file ]; then
+        file="file.txt"
     fi
+    echo "$msg" >>$file
 
-    echo "$msg" >>$f
-
-    git add $f >/dev/null 2>&1
+    git add -- "$file" >/dev/null 2>&1
 }
 
-# commit new file
+# Commit changes.
+# Usage:
+#   git_commit "commit message"
+commit() {
+    git commit --allow-empty -qm "$1" >/dev/null 2>&1
+}
+
+# Create a file and commit changes.
+# Usage:
+#   git_add_commit "path/to/file.txt" "commit message"
 add() {
     local msg=$1
+    local file=$2
 
-    stage $msg $2
-    commit $msg
+    stage "$msg" "$file"
+    commit "$msg"
 }
 
-# delete a file from git
+# delete a file from git.
+# Usage:
+#   delete "path/to/file.txt"
 delete() {
     git rm $1 >/dev/null 2>&1
 }
 
-# move a file in git
+# move (i.e. rename) a file in git.
+# Usage:
+#   move "current path" "new path"
 move() {
-    local a=$1
-    local b=$2
-    git mv $a $b >/dev/null 2>&1
+    git mv $1 $2 >/dev/null 2>&1
 }
 
-# commit changes to git
-commit() {
-    local msg=$1
-    git commit --allow-empty -qm $msg >/dev/null 2>&1
-}
-
-# create new branch
+# create a new branch.
+# Usage:
+#   create_branch "branch name"
 create_branch() {
     git checkout -qb $1 >/dev/null 2>&1
 }
 
-# checkout existing branch
+# checkout an existing branch.
+# Usage:
+#   checkout "branch name"
 checkout() {
     git checkout $1 >/dev/null 2>&1
 }
 
-# git pull
+# pull latest changes from remote.
+# Usage:
+#   pull
 pull() {
     git pull >/dev/null 2>&1
 }
 
-# git push
+# push a branch to remote.
+# Usage:
+#   push "branch name"
 push() {
     git push -u origin $1 >/dev/null 2>&1
 }
 
-# merge with branch
+# merge with branch.
+# Usage:
+#   merge "feature branch name" "commit message"
 merge() {
     git merge $1 -m "$2" >/dev/null 2>&1
 }
 
-# sort variable number of args separated by new line
+# sort variable number of args separated by new line.
+# Usage:
+#   sort_lines $@
 sort_lines() {
     printf '%s\n' "$@" | sort
 }
 
-# create a git alias
+# create a git alias.
+# Usage:
+#   alias "alias name" "script path"
 alias() {
     git config \
         "alias.$1" \
-        "!sh \"$2\"" \
+        "!bash \"$2\"" \
         >/dev/null 2>&1
 }
 
 # Compare variable args to lines captured are equivalent (useful for multiline output)
-# lines and input args are sorted, such that the order is irrelevant
+# lines and input args are sorted, such that the order is irrelevant.
+# Usage:
+#   assert_lines_equal $@
 assert_lines_equal() {
     local i
     local count=${#lines[@]}
@@ -174,7 +209,9 @@ assert_lines_equal() {
     done
 }
 
-# determine if value is within an array
+# determine if a target value is within an array.
+# Usage:
+#   in_line "target value" $@
 in_line() {
     local needle="$1"
     shift
@@ -187,7 +224,9 @@ in_line() {
     return 1
 }
 
-# determine if a value is (approximately) within an array
+# determine if a value is approximately (regex) contained within an array.
+# Usage:
+#   approx_in_line "target value" $@
 approx_in_line() {
     local needle="$1"
     shift

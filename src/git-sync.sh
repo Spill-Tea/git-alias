@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # BSD 3-Clause License
 #
@@ -41,7 +41,7 @@
 # Example:
 #
 # ```sh
-# sh git-sync.sh {default_branch} {current_branch}
+# bash git-sync.sh {default_branch} {current_branch}
 #
 # ```
 #
@@ -49,7 +49,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-sync.sh [options] [default_branch] [current_branch]
+    bash git-sync.sh [options] [default_branch] [current_branch]
 
 Description:
     Sync a branch to an upstream ancestor branch, maintaining linear commit history. If
@@ -62,10 +62,10 @@ Options:
 
 Examples:
     sh git-synch.sh
-    sh git-sync.sh dev
-    sh git-sync.sh dev feat-1
-    GIT_FLOW_BRANCH=dev sh git-sync.sh
-    sh git-sync.sh --help
+    bash git-sync.sh dev
+    bash git-sync.sh dev feat-1
+    GIT_FLOW_BRANCH=dev bash git-sync.sh
+    bash git-sync.sh --help
 
 EOF
 }

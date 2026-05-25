@@ -18,7 +18,7 @@ setup() {
   # create and switch to a new branch name
   CURRENT_BRANCH="Axoltl"
   create_branch $CURRENT_BRANCH
-  add "i is salamander"
+  add "i_is_salamander"
 }
 
 
@@ -35,14 +35,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h output help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help output help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -58,7 +58,7 @@ confirm_parent() {
 
 
 @test "Confirm $NAME output" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_parent "main"
 }
@@ -68,16 +68,16 @@ confirm_parent() {
   # setup
   local new_branch="Bear"
   create_branch $new_branch
-  add "i is furry monster"
+  add "i_is_furry_monster"
 
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_parent $CURRENT_BRANCH
 }
 
 
 @test "Confirm $NAME with arg output" {
-  run sh $SCRIPT $CURRENT_BRANCH
+  run bash $SCRIPT $CURRENT_BRANCH
 
   confirm_parent "main"
 }
@@ -87,9 +87,9 @@ confirm_parent() {
   # setup
   local new_branch="lion"
   create_branch $new_branch
-  add "oh my!"
+  add "oh_my!"
 
-  run sh $SCRIPT $new_branch
+  run bash $SCRIPT $new_branch
 
   confirm_parent $CURRENT_BRANCH
 }
@@ -110,7 +110,7 @@ confirm_parent() {
   # setup
   local new_branch="Bear"
   create_branch $new_branch
-  add "i is furry monster"
+  add "i_is_furry_monster"
 
   # create git alias to script
   local name="nsfchv335s"
@@ -127,7 +127,7 @@ confirm_parent() {
   local name="nsfchv335s"
   alias $name $SCRIPT
 
-  run sh $SCRIPT $CURRENT_BRANCH
+  run bash $SCRIPT $CURRENT_BRANCH
 
   confirm_parent "main"
 }
@@ -141,7 +141,7 @@ confirm_parent() {
   # setup
   local new_branch="lion"
   create_branch $new_branch
-  add "oh my!"
+  add "oh_my!"
 
   run git $name $new_branch
 

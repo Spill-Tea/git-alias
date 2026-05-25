@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # BSD 3-Clause License
 #
@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-current.sh
+# bash git-current.sh
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-current.sh [options]
+    bash git-current.sh [options]
 
 Description:
     Retrieve the branch name of the currently active working branch.
@@ -53,8 +53,8 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-current.sh
-    sh git-current.sh --help
+    bash git-current.sh
+    bash git-current.sh --help
 
 EOF
 }

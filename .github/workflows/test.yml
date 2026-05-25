@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: "1"
+  TERM: "xterm-256color"
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, ubuntu-22.04 ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Git version
+        run: |
+          git --version
+
+      - name: Run BATS tests
+        run: |
+          tests/bats/bin/bats \
+            --pretty \
+            --timing \
+            --print-output-on-failure \
+            --line-reference-format colon \
+            tests/

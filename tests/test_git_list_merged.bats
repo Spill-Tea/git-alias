@@ -18,7 +18,7 @@ setup() {
   # Create a new branch with commit and push to remote
   BRANCH="Unicorns"
   create_branch $BRANCH
-  add "new feature" "unicorn.py"
+  add "new_feature" "unicorn.py"
   push $BRANCH
 
   # merge new branch to main, and push main to remote
@@ -41,14 +41,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h output help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help output help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -62,7 +62,7 @@ confirm_branch() {
 
 
 @test "Confirm $NAME output" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_branch
 }

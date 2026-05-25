@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # BSD 3-Clause License
 #
@@ -36,7 +36,7 @@
 # Example:
 #
 # ```sh
-# sh git-stack.sh {default_branch}
+# bash git-stack.sh {default_branch}
 #
 # ```
 #
@@ -44,7 +44,7 @@
 show_help_menu() {
     cat <<EOF
 Usage:
-    sh git-stack.sh [options] [default_branch]
+    bash git-stack.sh [options] [default_branch]
 
 Description:
     List the names of every branch that has been merged to the specified branch on
@@ -55,9 +55,9 @@ Options:
     -h, --help      Show this help message and exit
 
 Examples:
-    sh git-stack.sh
-    sh git-stack.sh dev
-    sh git-stack.sh --help
+    bash git-stack.sh
+    bash git-stack.sh dev
+    bash git-stack.sh --help
 
 EOF
 }

@@ -30,14 +30,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h displays help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
    _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help displays help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
    _assert_help_menu_standard $NAME
 }
@@ -48,7 +48,7 @@ confirm_date_format() {
   local d="[0-9]"
   local date="^$d{4}-[01]$d-[0-3]$d"
   local time="T[0-2]$d:[0-5]$d:[0-5]$d"
-  local zone="[+-][0-2]$d:[0-5]$d"
+  local zone="Z|[+-][0-2]$d:[0-5]$d"
 
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
@@ -58,7 +58,7 @@ confirm_date_format() {
 
 
 @test "Confirm $NAME output" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_date_format
 

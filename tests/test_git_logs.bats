@@ -16,8 +16,8 @@ setup() {
   initialize_repo $MOCK_REPO
 
   # Create a few more commits (so we have 3 at least)
-  add "msg 1"
-  add "msg 2"
+  add "msg1"
+  add "msg2"
 }
 
 
@@ -34,14 +34,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h displays help menu" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help displays help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -50,11 +50,10 @@ teardown() {
 confirm_log_format() {
   local p=$1
   local d="[0-9]"
-  local log_fmt="[a-z0-9]{7} $d{4}-[01]$d-[0-3]$d "
-
+  local log_fmt="^[a-f0-9]{7} $d{4}-[01]$d-[0-3]$d .+ \(@[^)]+\)$"
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
-  [[ "$output" =~ $log_fmt*" (@Test User)"* ]]
+  [[ "$output" =~ $log_fmt ]]
   if ! [ -z $p ]; then
     [ "${#lines[@]}" -eq $p ]
   fi
@@ -67,7 +66,7 @@ confirm_log_format() {
   alias $name $SCRIPT
 
   for p in 1 2 3; do
-    run git $name -n $p
+    run git $name --no-color -n $p
     confirm_log_format $p
   done
 }
@@ -76,7 +75,7 @@ confirm_log_format() {
 @test "Confirm alias output" {
 
   for p in 1 2 3; do
-    run sh $SCRIPT -n $p
+    run bash $SCRIPT --no-color -n $p
     confirm_log_format $p
   done
 }
@@ -85,7 +84,7 @@ confirm_log_format() {
 @test "Confirm $NAME fn output" {
 
   for p in 1 2 3; do
-    run pretty_log -n $p
+    run pretty_log --no-color -n $p
     confirm_log_format $p
   done
 }

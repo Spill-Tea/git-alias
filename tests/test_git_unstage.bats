@@ -39,14 +39,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h output help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help output help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -77,7 +77,7 @@ confirm_failed() {
 
 
 @test "Confirm $NAME output without required argument" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_failed $FILE_NAME
 }
@@ -85,7 +85,7 @@ confirm_failed() {
 
 # NOTE: we can unstage a file that is not currently staged without issue.
 @test "Confirm $NAME output unstaged file" {
-  run sh $SCRIPT $FILE_NAME
+  run bash $SCRIPT $FILE_NAME
 
   confirm_unstaged $FILE_NAME
 }

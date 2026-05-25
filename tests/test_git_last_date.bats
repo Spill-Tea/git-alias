@@ -30,14 +30,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h displays help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
    _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help displays help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
    _assert_help_menu_standard $NAME
 }
@@ -58,7 +58,7 @@ confirm_date_format() {
 
 
 @test "Confirm $NAME output" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_date_format
 

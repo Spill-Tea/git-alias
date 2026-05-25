@@ -34,14 +34,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h displays help menu" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help displays help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -76,7 +76,7 @@ confirm_log_format() {
 @test "Confirm alias output" {
 
   for p in 1 2 3; do
-    run sh $SCRIPT -n $p
+    run bash $SCRIPT -n $p
     confirm_log_format $p
   done
 }

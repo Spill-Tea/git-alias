@@ -30,21 +30,21 @@ teardown() {
 
 
 @test "Confirm $NAME -h output help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help output help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME output without required argument" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   [ "$status" -eq 1 ]
   ! [ -z "$output" ]
@@ -61,7 +61,7 @@ confirm_verification() {
 
 
 @test "Confirm $NAME output returns sha hash" {
-  run sh $SCRIPT main
+  run bash $SCRIPT main
 
   confirm_verification
 }

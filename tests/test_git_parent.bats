@@ -35,14 +35,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h output help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help output help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -58,7 +58,7 @@ confirm_parent() {
 
 
 @test "Confirm $NAME output" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_parent "main"
 }
@@ -70,14 +70,14 @@ confirm_parent() {
   create_branch $new_branch
   add "i is furry monster"
 
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_parent $CURRENT_BRANCH
 }
 
 
 @test "Confirm $NAME with arg output" {
-  run sh $SCRIPT $CURRENT_BRANCH
+  run bash $SCRIPT $CURRENT_BRANCH
 
   confirm_parent "main"
 }
@@ -89,7 +89,7 @@ confirm_parent() {
   create_branch $new_branch
   add "oh my!"
 
-  run sh $SCRIPT $new_branch
+  run bash $SCRIPT $new_branch
 
   confirm_parent $CURRENT_BRANCH
 }
@@ -127,7 +127,7 @@ confirm_parent() {
   local name="nsfchv335s"
   alias $name $SCRIPT
 
-  run sh $SCRIPT $CURRENT_BRANCH
+  run bash $SCRIPT $CURRENT_BRANCH
 
   confirm_parent "main"
 }

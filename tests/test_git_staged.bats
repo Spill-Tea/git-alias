@@ -37,14 +37,14 @@ teardown() {
 
 
 @test "Confirm $NAME -h output help menu 1" {
-  run sh $SCRIPT -h
+  run bash $SCRIPT -h
 
   _assert_help_menu_standard $NAME
 }
 
 
 @test "Confirm $NAME --help output help menu 2" {
-  run sh $SCRIPT --help
+  run bash $SCRIPT --help
 
   _assert_help_menu_standard $NAME
 }
@@ -58,7 +58,7 @@ confirm_staged() {
 
 
 @test "Confirm $NAME output" {
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_staged $FILE_NAME
 }
@@ -69,7 +69,7 @@ confirm_staged() {
   local out="readmenot.md"
   move $readme $out
 
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_staged $FILE_NAME $out
 }
@@ -79,7 +79,7 @@ confirm_staged() {
   local readme="readme.md"
   delete $readme
 
-  run sh $SCRIPT
+  run bash $SCRIPT
 
   confirm_staged $FILE_NAME $readme
 }

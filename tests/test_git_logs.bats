@@ -50,7 +50,9 @@ teardown() {
 confirm_log_format() {
   local p=$1
   local d="[0-9]"
-  local log_fmt="^[a-f0-9]{7} $d{4}-[01]$d-[0-3]$d .+ \(@[^)]+\)$"
+  local user="\(@Test User\)$"
+  local log_fmt="^[a-f0-9]{7} $d{4}-[01]$d-[0-3]$d .+ $user"
+
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
   [[ "$output" =~ $log_fmt ]]

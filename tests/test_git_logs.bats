@@ -67,7 +67,7 @@ confirm_log_format() {
   alias $name $SCRIPT
 
   for p in 1 2 3; do
-    run git $name -n $p
+    run git $name --no-color -n $p
     confirm_log_format $p
   done
 }
@@ -76,7 +76,7 @@ confirm_log_format() {
 @test "Confirm alias output" {
 
   for p in 1 2 3; do
-    run bash $SCRIPT -n $p
+    run bash $SCRIPT --no-color -n $p
     confirm_log_format $p
   done
 }
@@ -85,7 +85,7 @@ confirm_log_format() {
 @test "Confirm $NAME fn output" {
 
   for p in 1 2 3; do
-    run pretty_log -n $p
+    run pretty_log --no-color -n $p
     confirm_log_format $p
   done
 }

@@ -54,7 +54,7 @@ Options:
 
 Examples:
     bash git-staged.sh
-    sh git-verify.sh --help
+    bash git-staged.sh --help
 
 EOF
 }

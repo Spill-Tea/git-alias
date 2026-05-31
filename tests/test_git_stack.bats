@@ -60,7 +60,7 @@ _confirm_output() {
 }
 
 
-# general unit test handler to processively work up the stack, checkout the branch, and 
+# general unit test handler to processively work up the stack, checkout the branch, and
 # evaluate the expected output meets expected, accepting a function expression to run.
 confirm_stack() {
   local expression_fn=$1

@@ -15,15 +15,15 @@ setup() {
   MOCK_REPO="$BATS_TEST_TMPDIR/repo"
   initialize_repo $MOCK_REPO
 
-  # create branch 1
-  BRANCH1="branch1"
-  create_branch $BRANCH1
-  add "part of stack 1"
-
-  # create branch 2
-  BRANCH2="branch2"
-  create_branch $BRANCH2
-  add "part of stack 2"
+  STACKED_BRANCHES=()
+  local j
+  local branch
+  for j in 1 2 3; do
+    branch="branch_$j"
+    create_branch $branch
+    add "part of stack $j"
+    STACKED_BRANCHES+=($branch)
+  done
 }
 
 
@@ -53,31 +53,41 @@ teardown() {
 }
 
 
-confirm_stack() {
+_confirm_output() {
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
   assert_lines_equal "$@"
 }
 
 
-# TODO: create a git flow model repo for testing
-#       such that we have a dev branch that has been merged to
-#       default main branch once, but is still ahead of main.
-#       then create a stack on the dev branch. and confirm
-#       output of script with user provided argument to dev branch.
-@test "Confirm $NAME output" {
-  run bash $SCRIPT
+# general unit test handler to processively work up the stack, checkout the branch, and
+# evaluate the expected output meets expected, accepting a function expression to run.
+confirm_stack() {
+  local expression_fn=$1
 
-  confirm_stack "$BRANCH1" "$BRANCH2"
+  for i in "${!STACKED_BRANCHES[@]}"; do
+    checkout ${STACKED_BRANCHES[$i]}
+
+    run $expression_fn
+
+    _confirm_output "${STACKED_BRANCHES[@]:0:$((i + 1))}"
+  done
+}
+
+
+# TODO: create a git flow model repo for testing such that we have a dev branch that has
+#       been merged to default main branch once, but is still ahead of main. then create
+#       a stack on the dev branch. and confirm output of script with user provided
+#       argument to dev branch.
+@test "Confirm $NAME output" {
+  confirm_stack "bash $SCRIPT main"
 }
 
 
 @test "Confirm lib fn output" {
   source "$DIR/lib.sh"
 
-  run get_stacked_branches "main"
-
-  confirm_stack "$BRANCH1" "$BRANCH2"
+  confirm_stack "get_stacked_branches main"
 }
 
 
@@ -86,7 +96,5 @@ confirm_stack() {
   local name="h5rdss9lk"
   alias $name $SCRIPT
 
-  run git $name
-
-  confirm_stack "$BRANCH1" "$BRANCH2"
+  confirm_stack "git $name"
 }

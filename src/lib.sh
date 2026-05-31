@@ -96,9 +96,9 @@ validate() {
 
 # list all branches (without any formatting)
 # Usage:
-#   list_branches
+#   list_branches [options]
 list_branches() {
-    git branch --format='%(refname:short)'
+    git for-each-ref $@ --format='%(refname:short)' refs/heads/
 }
 
 # Capture names of every branch merged to another (or default) branch
@@ -119,7 +119,7 @@ list_merged_branches() {
 #   git_parent_branch [branch name] [array of branch names to search]
 git_parent_branch() {
     local current=${1:-$(get_current_branch)}
-    local branches=${2:-$(git for-each-ref --format='%(refname:short)' refs/heads/)}
+    local branches=${2:-$(list_branches)}
 
     local best_branch=$(get_default_branch)
     local best_distance=$(calculate_distance $best_branch $current)
@@ -158,7 +158,7 @@ prune_branches() {
 # Usage:
 #   sync [parent branch name] [target branch name]
 sync() {
-    local default=${1:-$get_default_branch}
+    local default=${1:-$(get_default_branch)}
     local current=${2:-$(get_current_branch)}
     local branch
 
@@ -210,10 +210,7 @@ get_stacked_branches() {
         return 1
     fi
 
-    git for-each-ref \
-        --format='%(refname:short)' \
-        --merged HEAD \
-        refs/heads/ |
+    list_branches --merged HEAD |
         while read -r branch; do
             [ "$branch" = "$base_branch" ] && continue
 

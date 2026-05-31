@@ -109,7 +109,7 @@ commit() {
 
 # Create a file and commit changes.
 # Usage:
-#   git_add_commit <commit message> <path/to/file.txt> 
+#   git_add_commit <commit message> <path/to/file.txt>
 add() {
     local msg=$1
     local file=$2

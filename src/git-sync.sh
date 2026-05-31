@@ -84,6 +84,9 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     fi
 
     parent=${1:-$GIT_FLOW_BRANCH}
+    if [ -z $parent ]; then
+        parent=$(get_default_branch)
+    fi
     current=${2:-${get_current_branch}}
     sync $parent $current
 fi

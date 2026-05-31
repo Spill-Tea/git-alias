@@ -85,7 +85,7 @@ confirm_sync() {
 
   # confirm commit msg is rebased to branch
   run git log -n 2 --pretty=oneline
-  [[ "$output" =~ *$MESSAGE* ]]
+  [[ "$output" = *$MESSAGE ]]
   [[ "${lines[1]}" = *$MESSAGE ]]
 }
 

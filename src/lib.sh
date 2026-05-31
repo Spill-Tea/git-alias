@@ -220,17 +220,30 @@ get_stacked_branches() {
         done
 }
 
+# Generic determination if flag pattern exists in variable args.
+# Usage:
+#   has_flag <pattern a> <pattern b> [@]
+has_flag() {
+  local a="$1"
+  local b="$2"
+  local arg
+
+  shift 2
+
+  for arg in "$@"; do
+    case "$arg" in
+      $a | $b)
+        return 0
+        ;;
+    esac
+  done
+
+  return 1
+}
+
 # Determine if script arguments contain "-h" or "--help" cli flags
 # Usage:
 #   get_help [@]
 get_help() {
-    local arg
-    for arg in "$@"; do
-        case "$arg" in
-        -h | --help)
-            return 0
-            ;;
-        esac
-    done
-    return 1
+    has_flag "-h" "--help" $@
 }

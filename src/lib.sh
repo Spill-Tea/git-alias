@@ -158,7 +158,7 @@ prune_branches() {
 # Usage:
 #   sync [parent branch name] [target branch name]
 sync() {
-    local default=${1:-$get_default_branch}
+    local default=${1:-$(get_default_branch)}
     local current=${2:-$(get_current_branch)}
     local branch
 

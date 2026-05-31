@@ -224,21 +224,21 @@ get_stacked_branches() {
 # Usage:
 #   has_flag <pattern a> <pattern b> [@]
 has_flag() {
-  local a="$1"
-  local b="$2"
-  local arg
+    local a="$1"
+    local b="$2"
+    local arg
 
-  shift 2
+    shift 2
 
-  for arg in "$@"; do
-    case "$arg" in
-      $a | $b)
-        return 0
-        ;;
-    esac
-  done
+    for arg in "$@"; do
+        case "$arg" in
+        $a | $b)
+            return 0
+            ;;
+        esac
+    done
 
-  return 1
+    return 1
 }
 
 # Determine if script arguments contain "-h" or "--help" cli flags

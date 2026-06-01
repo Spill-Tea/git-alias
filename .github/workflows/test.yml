@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -43,6 +43,9 @@ jobs:
   prek:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
       - name: Run prek commit hooks
         uses: j178/prek-action@v2
         with:

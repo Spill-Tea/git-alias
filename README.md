@@ -117,7 +117,7 @@ Follow the conventions of the other scripts.
    1. Name should not contain spaces.
    1. Prefer dashes over underscores.
    1. name should be somewhat self explanatory (e.g. having a single letter name is too
-      obfuscated in meaning.) 
+      obfuscated in meaning.)
 1. The script should not be triggered if sourced (i.e. imported) from another file.
 1. new scripts should be properly unit tested. Make sure to setup an appropriate mock
    git repo for consistent testing purposes that is relevant for the task being

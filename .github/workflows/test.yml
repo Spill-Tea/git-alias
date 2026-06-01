@@ -15,7 +15,6 @@ env:
   TERM: "xterm-256color"
 
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -40,3 +39,13 @@ jobs:
             --print-output-on-failure \
             --line-reference-format colon \
             tests/
+
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run prek commit hooks
+        uses: j178/prek-action@v2
+        with:
+          prek-version: '0.4.x'
+          extra_args: "--all-files"
+          cache: true

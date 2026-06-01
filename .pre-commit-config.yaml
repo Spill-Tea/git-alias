@@ -35,3 +35,4 @@ repos:
           "--write",
           "--indent", "4"
         ]
+        exclude: .bats$

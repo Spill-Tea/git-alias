@@ -47,5 +47,5 @@ jobs:
         uses: j178/prek-action@v2
         with:
           prek-version: '0.4.x'
-          extra_args: "--all-files"
+          extra-args: "--all-files"
           cache: true

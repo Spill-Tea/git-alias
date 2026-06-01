@@ -15,7 +15,6 @@ env:
   TERM: "xterm-256color"
 
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -24,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -40,3 +39,16 @@ jobs:
             --print-output-on-failure \
             --line-reference-format colon \
             tests/
+
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Run prek commit hooks
+        uses: j178/prek-action@v2
+        with:
+          prek-version: '0.4.x'
+          extra-args: "--all-files"
+          cache: true

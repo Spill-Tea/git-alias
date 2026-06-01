@@ -108,6 +108,7 @@ tests/bats/bin/bats \
 prek install
 prek run --all-files
 ```
+
 ### Writing a new git alias script
 Follow the conventions of the other scripts.
 

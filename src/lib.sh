@@ -214,9 +214,16 @@ get_stacked_branches() {
         while read -r branch; do
             [ "$branch" = "$base_branch" ] && continue
 
-            is_ancestor "$base_branch" "$branch" &&
-                is_ancestor "$branch" HEAD &&
-                echo "$branch"
+            # branch must descend from base_branch
+            is_ancestor "$base_branch" "$branch" || continue
+
+            # branch must be on the path to HEAD
+            is_ancestor "$branch" HEAD || continue
+
+            # exclude ancestors of base_branch
+            is_ancestor "$branch" "$base_branch" && continue
+
+            echo "$branch"
         done
 }
 

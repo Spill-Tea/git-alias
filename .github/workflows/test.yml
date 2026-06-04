@@ -33,12 +33,7 @@ jobs:
 
       - name: Run BATS tests
         run: |
-          tests/bats/bin/bats \
-            --pretty \
-            --timing \
-            --print-output-on-failure \
-            --line-reference-format colon \
-            tests/
+          make test
 
   prek:
     runs-on: ubuntu-latest

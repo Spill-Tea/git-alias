@@ -8,22 +8,25 @@ DIR="$( dirname "$BATS_TEST_DIRNAME" )/src"
 SCRIPT="$DIR/$NAME"
 
 
-setup() {
-  source $SCRIPT
-
-  # create mock git repo
-  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
-  initialize_repo $MOCK_REPO
-
+create_stacked_branches() {
   STACKED_BRANCHES=()
   local j
   local branch
   for j in 1 2 3; do
     branch="branch_$j"
     create_branch $branch
-    add "part of stack $j"
+    add "part of stack $j" "page_$j.txt"
     STACKED_BRANCHES+=($branch)
   done
+}
+
+
+setup() {
+  source $SCRIPT
+
+  # create mock git repo
+  MOCK_REPO="$BATS_TEST_TMPDIR/repo"
+  initialize_repo $MOCK_REPO
 }
 
 
@@ -63,8 +66,10 @@ _confirm_output() {
 # general unit test handler to processively work up the stack, checkout the branch, and
 # evaluate the expected output meets expected, accepting a function expression to run.
 confirm_stack() {
+  local i
   local expression_fn=$1
 
+  create_stacked_branches
   for i in "${!STACKED_BRANCHES[@]}"; do
     checkout ${STACKED_BRANCHES[$i]}
 
@@ -75,12 +80,23 @@ confirm_stack() {
 }
 
 
-# TODO: create a git flow model repo for testing such that we have a dev branch that has
-#       been merged to default main branch once, but is still ahead of main. then create
-#       a stack on the dev branch. and confirm output of script with user provided
-#       argument to dev branch.
 @test "Confirm $NAME output" {
+  confirm_stack "bash $SCRIPT"
+}
+
+
+@test "Confirm $NAME main output" {
   confirm_stack "bash $SCRIPT main"
+}
+
+
+@test "Confirm $NAME git flow output" {
+  local dev="dev_branch"
+
+  setup_git_flow_model $MOCK_REPO $dev
+  checkout $dev
+
+  confirm_stack "bash $SCRIPT $dev"
 }
 
 
@@ -91,10 +107,44 @@ confirm_stack() {
 }
 
 
+@test "Confirm lib fn git flow output" {
+  source "$DIR/lib.sh"
+
+  local dev="dev_branch"
+  setup_git_flow_model $MOCK_REPO $dev
+  checkout $dev
+
+  confirm_stack "get_stacked_branches $dev"
+}
+
+
 @test "Confirm alias output" {
   # create git alias to script
   local name="h5rdss9lk"
   alias $name $SCRIPT
 
   confirm_stack "git $name"
+}
+
+
+@test "Confirm alias main output" {
+  # create git alias to script
+  local name="h5rdss9lk"
+  alias $name $SCRIPT
+
+  confirm_stack "git $name main"
+}
+
+
+@test "Confirm alias git flow output" {
+  # create git alias to script
+  local name="h5rdss9lk"
+  alias $name $SCRIPT
+
+  local dev="development"
+
+  setup_git_flow_model $MOCK_REPO $dev
+  checkout $dev
+
+  confirm_stack "git $name $dev"
 }

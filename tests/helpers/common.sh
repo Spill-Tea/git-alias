@@ -78,6 +78,35 @@ initialize_repo() {
     setup_user
 }
 
+# setup a git flow model repo.
+# Usage:
+#   setup_git_flow_model <repo path> <dev branch name>
+setup_git_flow_model() {
+    local path=$1
+    local dev_branch=$2
+
+    # create development branch
+    cd "$path/seed"
+    checkout main # make sure we are in main default branch
+    pull
+    create_branch $dev_branch
+    add "git flow model." "git_flow.txt"
+    push $dev_branch
+
+    # merge branch to main
+    checkout main
+    merge $dev_branch "this is a merger."
+    push main
+
+    # return to clone and update latest changes.
+    cd "$path/work"
+    checkout main
+    pull
+    checkout $dev_branch
+    pull
+    checkout main
+}
+
 # setup example user name and email
 # Usage:
 #   setup_user

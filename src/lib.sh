@@ -204,7 +204,6 @@ unstage_file() {
 #   get_stacked_branches <branch name>
 get_stacked_branches() {
     local base_branch="$1"
-    local current=$(get_current_branch)
     local branch
 
     if ! validate $base_branch; then
@@ -223,13 +222,6 @@ get_stacked_branches() {
 
             # exclude ancestors of base_branch
             is_ancestor $branch $base_branch && continue
-
-            # limit stack branch to within current branch space
-            if [ "$current" != "$base_branch" ]; then
-                ! (
-                    is_ancestor $current $branch || is_ancestor $branch $current
-                ) && continue
-            fi
 
             echo $branch
         done

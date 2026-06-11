@@ -9,13 +9,13 @@ SCRIPT="$DIR/$NAME"
 
 
 create_stacked_branches() {
-  STACKED_BRANCHES=()
-  local j
   local branch
-  for j in 1 2 3; do
-    branch="branch_$j"
+
+  STACKED_BRANCHES=()
+  # Create stacked branches that are not sorted alphabetically
+  for branch in xr4 axv m29; do
     create_branch $branch
-    add "part of stack $j" "page_$j.txt"
+    add "part of stack $branch" "page_$branch.txt"
     STACKED_BRANCHES+=($branch)
   done
 }
@@ -27,6 +27,11 @@ setup() {
   # create mock git repo
   MOCK_REPO="$BATS_TEST_TMPDIR/repo"
   initialize_repo $MOCK_REPO
+
+  # create a decoy branch
+  create_branch other
+  add "other msg" "other.txt"
+  checkout main
 }
 
 
@@ -59,7 +64,7 @@ teardown() {
 _confirm_output() {
   [ "$status" -eq 0 ]
   ! [ -z "$output" ]
-  assert_lines_equal "$@"
+  assert_lines_equal "--exact" "$@"
 }
 
 
@@ -103,7 +108,7 @@ confirm_stack() {
 @test "Confirm lib fn output" {
   source "$DIR/lib.sh"
 
-  confirm_stack "get_stacked_branches main"
+  confirm_stack "get_ordered_stacked_branches main"
 }
 
 
@@ -114,7 +119,7 @@ confirm_stack() {
   setup_git_flow_model $MOCK_REPO $dev
   checkout $dev
 
-  confirm_stack "get_stacked_branches $dev"
+  confirm_stack "get_ordered_stacked_branches $dev"
 }
 
 

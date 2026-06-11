@@ -213,15 +213,28 @@ alias() {
         >/dev/null 2>&1
 }
 
-# Compare variable args to lines captured are equivalent (useful for multiline output)
-# lines and input args are sorted, such that the order is irrelevant.
+# Compare variable args to lines captured are equivalent (useful for multiline output).
+# unless `--exact` flag is used, the lines and input args are sorted, such that the
+# order is irrelevant.
 # Usage:
 #   assert_lines_equal [@]
+#   assert_lines_equal --exact [@]
 assert_lines_equal() {
+    local flag=1
+    if [ "$1" == "--exact" ]; then
+        flag=0
+        shift 1
+    fi
+
     local i
     local count=${#lines[@]}
-    local expected=($(sort_lines "$@"))
-    local out=($(sort_lines "${lines[@]}"))
+    if [ $flag -eq 0 ]; then
+        local expected=("$@")
+        local out=("${lines[@]}")
+    else
+        local expected=($(sort_lines "$@"))
+        local out=($(sort_lines "${lines[@]}"))
+    fi
 
     if [[ $count -ne ${#expected[@]} ]]; then
         echo "line count mismatch $count vs ${#expected[@]}"

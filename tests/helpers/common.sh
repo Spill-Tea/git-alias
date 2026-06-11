@@ -213,8 +213,9 @@ alias() {
         >/dev/null 2>&1
 }
 
-# Compare variable args to lines captured are equivalent (useful for multiline output)
-# lines and input args are sorted, such that the order is irrelevant.
+# Compare variable args to lines captured are equivalent (useful for multiline output).
+# unless `--exact` flag is used, the lines and input args are sorted, such that the
+# order is irrelevant.
 # Usage:
 #   assert_lines_equal [@]
 #   assert_lines_equal --exact [@]

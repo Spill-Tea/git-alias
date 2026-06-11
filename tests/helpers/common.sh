@@ -219,14 +219,15 @@ alias() {
 #   assert_lines_equal [@]
 #   assert_lines_equal --exact [@]
 assert_lines_equal() {
-    local flag=$(expr "$1" == "--exact")
-    if $flag; then
+    local flag=1
+    if [ "$1" == "--exact" ]; then
+        flag=0
         shift 1
     fi
 
     local i
     local count=${#lines[@]}
-    if $flag; then
+    if [ $flag -eq 0 ]; then
         local expected=("$@")
         local out=("${lines[@]}")
     else

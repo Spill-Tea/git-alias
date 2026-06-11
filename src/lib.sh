@@ -204,6 +204,7 @@ unstage_file() {
 #   get_stacked_branches <branch name>
 get_stacked_branches() {
     local base_branch="$1"
+    local current=$(get_current_branch)
     local branch
 
     if ! validate $base_branch; then
@@ -215,16 +216,82 @@ get_stacked_branches() {
             [ "$branch" = "$base_branch" ] && continue
 
             # branch must descend from base_branch
-            is_ancestor "$base_branch" "$branch" || continue
+            is_ancestor $base_branch $branch || continue
 
             # branch must be on the path to HEAD
-            is_ancestor "$branch" HEAD || continue
+            is_ancestor $branch HEAD || continue
 
             # exclude ancestors of base_branch
-            is_ancestor "$branch" "$base_branch" && continue
+            is_ancestor $branch $base_branch && continue
 
-            echo "$branch"
+            # limit stack branch to within current branch space
+            if [ "$current" != "$base_branch" ]; then
+                ! (
+                    is_ancestor $current $branch || is_ancestor $branch $current
+                ) && continue
+            fi
+
+            echo $branch
         done
+}
+
+# Sort branches by ancestry
+# Usage:
+#   sort_branches_by_ancestry [branch names, ...]
+sort_branches_by_ancestry() {
+    local remaining=("$@")
+    local ordered=()
+    local candidate
+    local other
+    local is_oldest
+    local k
+    local temp
+    local index
+
+    while [ "${#remaining[@]}" -gt 0 ]; do
+        for index in "${!remaining[@]}"; do
+            candidate="${remaining[$index]}"
+            is_oldest=1
+
+            # identify if current candidate is eldest branch
+            for other in "${remaining[@]}"; do
+                [ "$candidate" = "$other" ] && continue
+                if is_ancestor $other $candidate; then
+                    is_oldest=0
+                    break
+                fi
+            done
+
+            # push to ordered stack if eldest found and break for loop
+            if [ "$is_oldest" -eq 1 ]; then
+                ordered+=("$candidate")
+                # rebuild array excluding index position into a temporary array
+                temp=()
+                for k in "${!remaining[@]}"; do
+                    if [ $k = $index ]; then
+                        continue
+                    fi
+                    temp+=("${remaining[$k]}")
+                done
+                remaining=(${temp[@]})
+                break
+            fi
+        done
+    done
+
+    printf '%s\n' "${ordered[@]}"
+}
+
+# Get stacked branches, where leaf branches are reported last.
+# Usage:
+#   get_ordered_stacked_branches <base branch name>
+get_ordered_stacked_branches() {
+    local base_branch="$1"
+    local branches=$(
+        get_stacked_branches $base_branch
+    )
+
+    sort_branches_by_ancestry ${branches[@]}
 }
 
 # Generic determination if flag pattern exists in variable args.

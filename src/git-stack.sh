@@ -76,5 +76,5 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
     fi
 
     branch=${1:-$(get_default_branch)}
-    get_stacked_branches $branch
+    get_ordered_stacked_branches $branch
 fi

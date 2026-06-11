@@ -217,11 +217,22 @@ alias() {
 # lines and input args are sorted, such that the order is irrelevant.
 # Usage:
 #   assert_lines_equal [@]
+#   assert_lines_equal --exact [@]
 assert_lines_equal() {
+    local flag=$(expr "$1" == "--exact")
+    if $flag; then
+        shift 1
+    fi
+
     local i
     local count=${#lines[@]}
-    local expected=($(sort_lines "$@"))
-    local out=($(sort_lines "${lines[@]}"))
+    if $flag; then
+        local expected=("$@")
+        local out=("${lines[@]}")
+    else
+        local expected=($(sort_lines "$@"))
+        local out=($(sort_lines "${lines[@]}"))
+    fi
 
     if [[ $count -ne ${#expected[@]} ]]; then
         echo "line count mismatch $count vs ${#expected[@]}"

@@ -83,8 +83,9 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
         exit 0
     fi
 
-    is_global=$(has_flag "-g" "--global" $@)
-    if [ $is_global ]; then
+    has_flag "-g" "--global" $@
+    is_global=$?
+    if [ $is_global -eq 0 ]; then
         echo "Global flag detected. Aliases will be created globally."
     fi
 
@@ -94,7 +95,7 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
             continue
         fi
         name=$(extract_name $base)
-        if [ $is_global ]; then
+        if [ $is_global -eq 0 ]; then
             alias $name $file --global
         else
             alias $name $file
